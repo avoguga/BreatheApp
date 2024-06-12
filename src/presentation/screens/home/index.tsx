@@ -1,9 +1,15 @@
-import { Text, View } from "react-native";
+import { MainButton } from "@/global/components/main-button";
+import { View } from "react-native";
 
 const Home = () => {
   return (
-    <View style={{ flex: 1 }}>
-      <Text>Home</Text>
+    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      <MainButton>
+        <MainButton.IconView style={{ backgroundColor: "yellow" }}>
+          <MainButton.Icon name="activity"/>
+        </MainButton.IconView>
+        <MainButton.Text>Bom dia</MainButton.Text>
+      </MainButton>
     </View>
   );
 };

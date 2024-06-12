@@ -31,13 +31,13 @@ export default function Index() {
 }
 `;
 
-const layoutContent = `import { Stack } from "expo-router";
+const layoutContent = `import { View, Text } from "react-native";
 
 export default function RootLayout() {
   return (
-    <Stack>
-      <Stack.Screen name="index" />
-    </Stack>
+    <View>
+      <Text>asdasdasdas</Text>
+    </View>
   );
 }
 `;

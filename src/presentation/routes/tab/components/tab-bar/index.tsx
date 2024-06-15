@@ -1,9 +1,9 @@
+import { colors } from '@/presentation/constants/colors';
+import { Feather } from '@expo/vector-icons';
 import type { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import TabContainer from '../tab-container';
-import { Feather } from '@expo/vector-icons'
-import colors from '@/global/colors';
 
 export const TabBarComponent: React.FC<BottomTabBarProps> = ({
   state,
@@ -53,10 +53,10 @@ export const TabBarComponent: React.FC<BottomTabBarProps> = ({
           }}
         >
           <Feather
-            stroke={isFocused ? colors.primaryButton : '#fff'}
+            stroke={isFocused ? colors.primary.textColor : '#fff'}
             width={28}
             height={28}
-            name='alert-circle'
+            name="alert-circle"
           />
         </TouchableOpacity>
       );

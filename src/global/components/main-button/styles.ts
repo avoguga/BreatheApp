@@ -1,8 +1,8 @@
-import colors from "@/global/colors";
-import styled from "styled-components/native";
+import { colors } from '@/presentation/constants/colors';
+import styled from 'styled-components/native';
 
 export const StyledButton = styled.TouchableOpacity`
-  background-color: ${colors.primaryButton};
+  background-color: ${colors.primary.backgroundColor};
   border-radius: 4px;
   align-items: center;
   justify-content: center;
@@ -13,7 +13,7 @@ export const StyledButton = styled.TouchableOpacity`
 
 export const IconView = styled.View`
   border-radius: 100px;
-`
+`;
 
 export const ButtonText = styled.Text`
   color: white;

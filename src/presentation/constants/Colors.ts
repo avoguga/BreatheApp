@@ -5,5 +5,6 @@ export const colors = {
   },
   secondary: {
     backgroundColor: '#fff',
+    textColor: '#fff',
   },
 };

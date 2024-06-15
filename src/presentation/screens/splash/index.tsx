@@ -18,7 +18,6 @@ const Splash = () => {
       <LottieView
         autoPlay
         style={{ width: Dimensions.get('screen').width, height: 500 }}
-        // onAnimationFinish={() => navigate('Home' as never)}
         source={require('./splash.json')}
       />
       <SplashText>BreatheApp</SplashText>

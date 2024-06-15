@@ -1,5 +1,4 @@
 import { Home } from '@/presentation/screens/home';
-import { Splash } from '@/presentation/screens/splash';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { TabBarComponent } from './components/tab-bar';
 
@@ -13,7 +12,6 @@ export const BottomTabNavigation = () => (
     }}
     tabBar={(props) => <TabBarComponent {...props} />}
   >
-    <Tab.Screen name="Splash" component={Splash} />
     <Tab.Screen name="Home" component={Home} />
   </Tab.Navigator>
 );

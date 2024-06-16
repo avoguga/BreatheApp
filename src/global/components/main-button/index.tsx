@@ -1,10 +1,12 @@
-import { MainButtonIcon } from "./main-button-icon";
-import { MainButtonText } from "./main-button-text";
-import { IconView, StyledButton } from "./styles";
-import { MainButtonProps } from "./types";
+import { MainButtonIcon } from './main-button-icon';
+import { MainButtonText } from './main-button-text';
+import { IconView, StyledButton } from './styles';
+import { MainButtonProps } from './types';
 
 const MainButton = ({ children, ...props }: MainButtonProps) => (
-  <StyledButton {...props}>{children}</StyledButton>
+  <StyledButton {...props} activeOpacity={0.8}>
+    {children}
+  </StyledButton>
 );
 
 MainButton.IconView = IconView;

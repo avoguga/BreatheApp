@@ -1,6 +1,6 @@
 import { BaseContainer } from './styles';
 import { IContainer } from './types';
 
-export const Container = ({ children, ...props }: IContainer) => {
-  return <BaseContainer {...props}>{children}</BaseContainer>;
+export const Container = ({ ...props }: IContainer) => {
+  return <BaseContainer {...props}>{props.children}</BaseContainer>;
 };

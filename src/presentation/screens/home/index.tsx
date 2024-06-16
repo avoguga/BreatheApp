@@ -1,24 +1,51 @@
 import { Container } from '@/global/components/container';
 import { MainButton } from '@/global/components/main-button';
-import { authentication } from '@/infra/firebase';
+import { FlatList } from 'react-native';
+import { Card } from './components/card';
+import { DrivingTime } from './components/driving-time';
+import { mock } from './utils';
 
 const Home = () => {
-  const { createAccount } = authentication;
   return (
     <Container>
-      <MainButton
-        onPress={() =>
-          createAccount({
-            email: 'claudemirmacedo@gmail.com',
-            password: '123123123',
-          }).then((account) => console.log(account))
-        }
-      >
-        <MainButton.IconView style={{ backgroundColor: 'yellow' }}>
-          <MainButton.Icon name="activity" />
-        </MainButton.IconView>
-        <MainButton.Text>Bom dia</MainButton.Text>
-      </MainButton>
+      <DrivingTime>
+        <DrivingTime.Text>Tempo total dirigindo: 01:32:02</DrivingTime.Text>
+        <DrivingTime.Text>Tempo até dar uma pausa: 01:32:02</DrivingTime.Text>
+        <MainButton
+          style={{
+            alignSelf: 'flex-start',
+            backgroundColor: '#336665',
+            marginTop: 8,
+          }}
+        >
+          <MainButton.Text>Começar a dirigir</MainButton.Text>
+        </MainButton>
+      </DrivingTime>
+      <FlatList
+        data={mock}
+        horizontal
+        scrollEnabled
+        contentContainerStyle={{
+          paddingHorizontal: 16,
+          gap: 8,
+        }}
+        renderItem={({ item }) => (
+          <Card>
+            <Card.Image source={{ uri: item.uri }}>
+              <Card.Text>{item.title}</Card.Text>
+              <MainButton
+                style={{
+                  alignSelf: 'flex-start',
+                  backgroundColor: '#336665',
+                  marginTop: 8,
+                }}
+              >
+                <MainButton.Text>Começar a dirigir</MainButton.Text>
+              </MainButton>
+            </Card.Image>
+          </Card>
+        )}
+      />
     </Container>
   );
 };

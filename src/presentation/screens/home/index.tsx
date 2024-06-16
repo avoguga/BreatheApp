@@ -1,11 +1,11 @@
+import { Container } from '@/global/components/container';
 import { MainButton } from '@/global/components/main-button';
 import { authentication } from '@/infra/firebase';
-import { View } from 'react-native';
 
 const Home = () => {
   const { createAccount } = authentication;
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <Container>
       <MainButton
         onPress={() =>
           createAccount({
@@ -19,7 +19,7 @@ const Home = () => {
         </MainButton.IconView>
         <MainButton.Text>Bom dia</MainButton.Text>
       </MainButton>
-    </View>
+    </Container>
   );
 };
 

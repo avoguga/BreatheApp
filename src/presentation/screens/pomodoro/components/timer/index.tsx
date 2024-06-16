@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Svg, { Circle } from 'react-native-svg';
-import { useTimer } from '../../hooks/useTimer';
+import { useTimer } from '../../hooks/use-timer';
 import { modes } from '../utils';
 import { TimerContainer, TimerText } from './styles';
 import { CircularProgressProps, ModeKeys } from './types';

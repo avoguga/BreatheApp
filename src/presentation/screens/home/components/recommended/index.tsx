@@ -23,12 +23,25 @@ export const Recommended = () => (
             <Card.Text>{item.title}</Card.Text>
             <MainButton
               style={{
-                alignSelf: 'flex-start',
-                backgroundColor: '#336665',
-                marginTop: 8,
+                backgroundColor: 'transparent',
+                position: 'absolute',
+                flex: 1,
+                bottom: 8,
+                left: 16,
               }}
             >
-              <MainButton.Text>Começar a dirigir</MainButton.Text>
+              <MainButton.IconView>
+                <MainButton.Icon
+                  name="headphones"
+                  size={28}
+                  color={colors.secondary.backgroundColor}
+                />
+                <MainButton.Icon
+                  name="book"
+                  size={28}
+                  color={colors.secondary.backgroundColor}
+                />
+              </MainButton.IconView>
             </MainButton>
           </Card.Image>
         </Card>

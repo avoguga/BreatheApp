@@ -13,7 +13,7 @@ const Home = () => {
 
   return (
     <Container>
-      <DrivingTime>
+      <DrivingTime style={{ marginBottom: 16 }}>
         <DrivingTime.Text>
           Tempo total dirigindo: {formatTime(time)}
         </DrivingTime.Text>

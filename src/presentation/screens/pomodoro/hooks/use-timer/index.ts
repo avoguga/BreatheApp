@@ -1,39 +1,68 @@
 import { useEffect, useState } from 'react';
 import { ModeKeys } from '../../components/timer/types';
 import { modes } from '../../components/utils';
+import { usePomodoroStore } from '../../store';
 
-export const useTimer = (
-  mode: ModeKeys,
-  changeMode: (mode: ModeKeys) => void
-): number => {
-  const [timeLeft, setTimeLeft] = useState(modes[mode].duration);
+const useTimer = () => {
+  const {
+    time,
+    setTime,
+    timeLeft,
+    setTimeLeft,
+    setTimeUntilBreak,
+    mode,
+    setMode,
+  } = usePomodoroStore();
   const [pomodoroCount, setPomodoroCount] = useState(0);
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft((prevTime) => prevTime - 1);
-    }, 1000);
+  const handleInterval = () => {
+    decrementTimeLeft();
+    updateModeIfNeeded();
+  };
 
-    return () => clearInterval(timer);
-  }, []);
-
-  useEffect(() => {
-    if (timeLeft === 0) {
-      if (mode === 'drive') {
-        setPomodoroCount(pomodoroCount + 1);
-      }
-
-      const isLongBreak = mode === 'drive' && pomodoroCount >= 3;
-      const nextMode = isLongBreak ? 'longBreak' : modes[mode].next;
-
-      setTimeLeft(modes[nextMode].duration);
-      changeMode(nextMode);
-
-      if (isLongBreak) {
-        setPomodoroCount(0);
-      }
+  const decrementTimeLeft = () => {
+    const nextTimeLeft = timeLeft - 1;
+    if (mode === 'drive') {
+      setTime(time + 1);
+      setTimeUntilBreak(nextTimeLeft);
     }
-  }, [timeLeft, mode, changeMode, pomodoroCount]);
+    setTimeLeft(nextTimeLeft);
+  };
+
+  const updateModeIfNeeded = () => {
+    if (timeLeft <= 0) {
+      switchMode();
+    }
+  };
+
+  const switchMode = () => {
+    const isLongBreak = mode === 'drive' && pomodoroCount >= 3;
+    const nextMode = isLongBreak ? 'longBreak' : modes[mode].next;
+
+    if (isLongBreak) {
+      setPomodoroCount(0);
+    } else if (mode === 'drive') {
+      setPomodoroCount(pomodoroCount + 1);
+    }
+
+    setMode(nextMode);
+    setTimeLeft(modes[nextMode].duration);
+    resetTimeUntilBreak(nextMode);
+  };
+
+  const resetTimeUntilBreak = (nextMode: ModeKeys) => {
+    const breakTime = ['shortBreak', 'longBreak'].includes(nextMode)
+      ? 0
+      : modes[nextMode].duration;
+    setTimeUntilBreak(breakTime);
+  };
+
+  useEffect(() => {
+    const timer = setInterval(handleInterval, 1000);
+    return () => clearInterval(timer);
+  }, [mode, time, timeLeft, setTime, setTimeLeft, setMode, pomodoroCount]);
 
   return timeLeft;
 };
+
+export { useTimer };

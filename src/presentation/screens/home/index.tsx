@@ -1,17 +1,27 @@
 import { Container } from '@/global/components/container';
 import { MainButton } from '@/global/components/main-button';
+import { useNavigation } from '@react-navigation/native';
 import { FlatList } from 'react-native';
+import { usePomodoroStore } from '../pomodoro/store';
 import { Card } from './components/card';
 import { DrivingTime } from './components/driving-time';
-import { mock } from './utils';
+import { formatTime, mock } from './utils';
 
 const Home = () => {
+  const { navigate } = useNavigation();
+  const { time, timeUntilBreak } = usePomodoroStore();
+  console.log(time, timeUntilBreak);
   return (
     <Container>
       <DrivingTime>
-        <DrivingTime.Text>Tempo total dirigindo: 01:32:02</DrivingTime.Text>
-        <DrivingTime.Text>Tempo até dar uma pausa: 01:32:02</DrivingTime.Text>
+        <DrivingTime.Text>
+          Tempo total dirigindo: {formatTime(time)}
+        </DrivingTime.Text>
+        <DrivingTime.Text>
+          Tempo até dar uma pausa: {formatTime(timeUntilBreak)}
+        </DrivingTime.Text>
         <MainButton
+          onPress={() => navigate('Pomodoro' as never)}
           style={{
             alignSelf: 'flex-start',
             backgroundColor: '#336665',

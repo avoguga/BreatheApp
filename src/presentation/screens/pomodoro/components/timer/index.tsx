@@ -1,19 +1,18 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Svg, { Circle } from 'react-native-svg';
 import { useTimer } from '../../hooks/use-timer';
+import { usePomodoroStore } from '../../store';
 import { modes } from '../utils';
 import { TimerContainer, TimerText } from './styles';
-import { CircularProgressProps, ModeKeys } from './types';
+import { CircularProgressProps } from './types';
 
 export default function AnimatedCircle({
   size,
-  initialMode,
   tintColor,
   backgroundColor,
 }: CircularProgressProps) {
-  const [mode, setMode] = useState<ModeKeys>(initialMode);
-  const timeLeft = useTimer(mode, setMode);
-
+  const { mode } = usePomodoroStore();
+  const timeLeft = useTimer();
   const radius = (size - 12) / 2;
   const circumference = 2 * Math.PI * radius;
   const fill = timeLeft / modes[mode].duration;

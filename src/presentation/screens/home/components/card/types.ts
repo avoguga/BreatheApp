@@ -1,5 +1,8 @@
-import { ImageBackgroundProps, TouchableOpacityProps } from 'react-native';
-import { TextProps } from 'react-native-svg';
+import {
+  ImageBackgroundProps,
+  TextProps,
+  TouchableOpacityProps,
+} from 'react-native';
 
 export interface ICardContainer extends TouchableOpacityProps {}
 export interface ICardText extends TextProps {}

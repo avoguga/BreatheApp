@@ -14,7 +14,6 @@ export const Pomodoro = () => {
         backgroundColor="transparent"
         size={200}
         tintColor="#fff"
-        initialMode="drive"
       />
     </Container>
   );

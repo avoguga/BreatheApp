@@ -10,7 +10,11 @@ export const StackNavigation = () => (
   <Stack.Navigator
     screenOptions={{
       headerShown: false,
-      headerTitleStyle: { fontFamily: fonts.bold, fontSize: 24 },
+      headerTitleStyle: {
+        fontFamily: fonts.bold,
+        fontSize: 24,
+        borderBottomWidth: 0.5,
+      },
       headerLeft: () => null,
     }}
   >

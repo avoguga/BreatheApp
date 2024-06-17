@@ -1,4 +1,3 @@
-import { AccountDTO } from "@/dtos/create-account-dto";
 import { authentication } from "@/infra/firebase";
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
@@ -12,30 +11,35 @@ import {
   View,
 } from "react-native";
 
-const Login = () => {
+const ForgotPassword = () => {
   const { navigate } = useNavigation();
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
 
-  const handleLogin = async () => {
-    if (!email || !password) {
-      Alert.alert("Erro", "Por favor, preencha todos os campos.");
+  const handleResetPassword = async () => {
+    if (!email) {
+      Alert.alert(
+        "Erro",
+        "Por favor, insira seu e-mail para recuperar a senha."
+      );
       return;
     }
 
-    const accountDTO: AccountDTO = { email, password };
     try {
-      await authentication.login(accountDTO);
-      navigate("HomeTabs" as never);
+      await authentication.resetPassword(email);
+      Alert.alert(
+        "Sucesso",
+        "Se o e-mail estiver cadastrado, um e-mail de redefinição de senha foi enviado."
+      );
+      navigate("Login" as never);
     } catch (error) {
       let errorMessage =
-        "Não foi possível realizar o login. Verifique suas credenciais e tente novamente.";
+        "Não foi possível enviar o e-mail de redefinição de senha.";
 
       if (error instanceof Error) {
         if ((error as any).code === "auth/invalid-email") {
           errorMessage = "O formato do e-mail é inválido.";
-        } else if ((error as any).code === "auth/wrong-password") {
-          errorMessage = "Senha incorreta. Verifique suas credenciais.";
+        } else if ((error as any).code === "auth/user-not-found") {
+          errorMessage = "Usuário não encontrado com este e-mail.";
         }
       }
 
@@ -49,7 +53,7 @@ const Login = () => {
         source={require("../../../../assets/imgs/login-car.png")}
         style={styles.image}
       />
-      <Text style={styles.title}>Logue na sua conta</Text>
+      <Text style={styles.title}>Recuperar Senha</Text>
       <TextInput
         style={styles.input}
         placeholder="E-mail"
@@ -57,32 +61,18 @@ const Login = () => {
         value={email}
         onChangeText={setEmail}
       />
-      <TextInput
-        style={styles.input}
-        placeholder="Senha"
-        placeholderTextColor="#7D7D7D"
-        secureTextEntry
-        value={password}
-        onChangeText={setPassword}
-      />
-      <TouchableOpacity
-        onPress={() => navigate("ForgotPassword" as never)}
-        style={styles.anchors}
-      >
-        <Text style={styles.forgotPassword}>Esqueceu sua senha?</Text>
+      <TouchableOpacity style={styles.button} onPress={handleResetPassword}>
+        <Text style={styles.buttonText}>Recuperar Senha</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.anchors}
         onPress={() => {
-          navigate("Register" as never);
+          navigate("Login" as never);
         }}
       >
         <Text style={styles.register}>
-          Ainda não tem uma conta? Registre-se.
+          Lembrou a senha? <Text style={styles.loginLink}>Faça login.</Text>
         </Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Logar</Text>
       </TouchableOpacity>
     </View>
   );
@@ -120,17 +110,14 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "flex-start",
   },
-  forgotPassword: {
+  register: {
     color: "#FFF",
     textAlign: "left",
     width: "100%",
     marginBottom: 20,
   },
-  register: {
-    color: "#FFF",
-    textAlign: "left",
-    width: "100%",
-    marginBottom: 40,
+  loginLink: {
+    textDecorationLine: "underline",
   },
   button: {
     width: "100%",
@@ -147,4 +134,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export { Login };
+export { ForgotPassword };

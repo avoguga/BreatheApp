@@ -1,4 +1,5 @@
 import { fonts } from "@/presentation/constants/fonts";
+import { ForgotPassword } from "@/presentation/screens/forgot-password";
 import { Login } from "@/presentation/screens/login";
 import { Onboarding } from "@/presentation/screens/onboarding";
 import { Pomodoro } from "@/presentation/screens/pomodoro";
@@ -25,6 +26,7 @@ export const StackNavigation = () => (
     <Stack.Screen name="Onboarding" component={Onboarding} />
     <Stack.Screen name="Login" component={Login} />
     <Stack.Screen name="Register" component={Register} />
+    <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
     <Stack.Screen
       name="HomeTabs"
       component={BottomTabNavigation}

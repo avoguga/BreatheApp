@@ -1,7 +1,7 @@
-import { AccountDTO } from '@/dtos/create-account-dto';
-import firebase from '@react-native-firebase/app';
-import auth from '@react-native-firebase/auth';
-import { config } from './firebase.config';
+import { AccountDTO } from "@/dtos/create-account-dto";
+import firebase from "@react-native-firebase/app";
+import auth from "@react-native-firebase/auth";
+import { config } from "./firebase.config";
 
 const apps = firebase.apps;
 
@@ -17,6 +17,7 @@ const authentication = {
     ),
   login: (accountDTO: AccountDTO) =>
     auth().signInWithEmailAndPassword(accountDTO.email, accountDTO.password),
+  resetPassword: (email: string) => auth().sendPasswordResetEmail(email),
 };
 
 export { authentication };

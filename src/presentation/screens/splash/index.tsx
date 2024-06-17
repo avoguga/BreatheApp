@@ -11,7 +11,7 @@ const Splash = () => {
     const timer = setTimeout(() => {
       navigation.reset({
         index: 0,
-        routes: [{ name: "HomeTabs" as never }],
+        routes: [{ name: "Onboarding" as never }],
       });
     }, 3000);
     return () => clearTimeout(timer);

@@ -1,6 +1,8 @@
 import { fonts } from "@/presentation/constants/fonts";
+import { Login } from "@/presentation/screens/login";
 import { Onboarding } from "@/presentation/screens/onboarding";
 import { Pomodoro } from "@/presentation/screens/pomodoro";
+import { Register } from "@/presentation/screens/register";
 import { Splash } from "@/presentation/screens/splash";
 import { createStackNavigator } from "@react-navigation/stack";
 import { BottomTabNavigation } from "../tab";
@@ -21,6 +23,8 @@ export const StackNavigation = () => (
   >
     <Stack.Screen name="Splash" component={Splash} />
     <Stack.Screen name="Onboarding" component={Onboarding} />
+    <Stack.Screen name="Login" component={Login} />
+    <Stack.Screen name="Register" component={Register} />
     <Stack.Screen
       name="HomeTabs"
       component={BottomTabNavigation}

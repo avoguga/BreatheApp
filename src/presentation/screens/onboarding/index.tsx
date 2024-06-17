@@ -1,31 +1,26 @@
-import OnboardingItem from "@/presentation/screens/onboarding/components/onboarding-item";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import React, { useEffect, useRef, useState } from "react";
-import { Animated, FlatList, StyleSheet, View } from "react-native";
-import Paginator from "./components/paginator";
-import onboardingItens from "./utils/onboarding-itens";
+import React, { useEffect, useState } from "react";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { MMKV } from "react-native-mmkv";
+
+// Inicialize o MMKV
+const storage = new MMKV();
 
 export function Onboarding({ navigation }: any) {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const scrollX = useRef(new Animated.Value(0)).current;
-  const slideRef = useRef(null);
   const [showOnboarding, setShowOnboarding] = useState(true);
 
   const navigateToHome = () => {
     navigation.reset({
       index: 0,
-      routes: [{ name: "HomeTabs" }],
+      routes: [{ name: "Login" }],
     });
   };
 
-  const checkOnboarding = async () => {
+  const checkOnboarding = () => {
     try {
-      const hasShownOnboarding = await AsyncStorage.getItem(
-        "hasShownOnboarding"
-      );
+      const hasShownOnboarding = storage.getString("hasShownOnboarding");
       if (hasShownOnboarding) {
         setShowOnboarding(false);
-        // navigateToHome();
+        navigateToHome();
       }
     } catch (error) {
       console.error(error);
@@ -33,37 +28,17 @@ export function Onboarding({ navigation }: any) {
   };
 
   useEffect(() => {
-    if (currentIndex === onboardingItens.length - 1) {
-      onFinishOnboarding();
-      // navigateToHome();
-    }
-  }, [currentIndex]);
-
-  useEffect(() => {
     // checkOnboarding();
   }, []);
 
-  const onFinishOnboarding = async () => {
+  const onFinishOnboarding = () => {
     try {
-      // await AsyncStorage.setItem("hasShownOnboarding", "true");
+      storage.set("hasShownOnboarding", "true");
+      navigateToHome();
     } catch (error) {
       console.error(error);
     }
   };
-
-  useEffect(() => {
-    if (currentIndex === onboardingItens.length - 1) {
-      onFinishOnboarding();
-    }
-  }, [currentIndex]);
-
-  const viewableItemsChanged = useRef(({ viewableItems }: any) => {
-    setCurrentIndex(viewableItems[0].index);
-  }).current;
-
-  const viewConfig = useRef({ viewAreaCoveragePercentThreshold: 50 }).current;
-
-  const renderItem = ({ item }: any) => <OnboardingItem item={item} />;
 
   if (!showOnboarding) {
     return null;
@@ -71,37 +46,19 @@ export function Onboarding({ navigation }: any) {
 
   return (
     <View style={styles.container}>
-      <View style={{ flex: 3 }}>
-        <FlatList
-          data={onboardingItens.map((item: any) => item)}
-          renderItem={renderItem}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          pagingEnabled
-          bounces={false}
-          keyExtractor={(item) => item.id}
-          onScroll={Animated.event(
-            [
-              {
-                nativeEvent: {
-                  contentOffset: {
-                    x: scrollX,
-                  },
-                },
-              },
-            ],
-            {
-              useNativeDriver: false,
-            }
-          )}
-          scrollEventThrottle={32}
-          onViewableItemsChanged={viewableItemsChanged}
-          viewabilityConfig={viewConfig}
-          ref={slideRef}
+      <View style={styles.content}>
+        <Text style={styles.title}>Seja bem-vindo ao Breathe!</Text>
+        <Image
+          source={require("../../../../assets/imgs/betterwaywork.png")}
+          style={styles.image}
         />
+        <Text style={styles.subtitle}>
+          Torne suas viagens mais seguras e saudáveis.
+        </Text>
       </View>
-
-      <Paginator data={onboardingItens} scrollX={scrollX} />
+      <TouchableOpacity style={styles.button} onPress={onFinishOnboarding}>
+        <Text style={styles.buttonText}>Iniciar</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -109,7 +66,40 @@ export function Onboarding({ navigation }: any) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "space-around",
     alignItems: "center",
+    paddingHorizontal: 20,
+    backgroundColor: "#fff",
+  },
+  content: {
+    alignItems: "center",
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    textAlign: "center",
+    color: "#1C2633",
+  },
+  image: {
+    width: 370,
+    height: 370,
+    resizeMode: "contain",
+  },
+  subtitle: {
+    fontSize: 16,
+    textAlign: "center",
+    width: 200,
+    color: "#1C2633",
+  },
+  button: {
+    width: "100%",
+    alignItems: "center",
+    backgroundColor: "#454235",
+    paddingVertical: 15,
+    borderRadius: 10,
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 16,
   },
 });

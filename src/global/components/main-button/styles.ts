@@ -13,6 +13,8 @@ export const StyledButton = styled.TouchableOpacity`
 
 export const IconView = styled.View`
   border-radius: 100px;
+  flex-direction: row;
+  gap: 8px;
 `;
 
 export const ButtonText = styled.Text`

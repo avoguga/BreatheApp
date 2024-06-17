@@ -5,13 +5,17 @@ import { Dimensions } from "react-native";
 import { LottieContainer, SplashText } from "./styles";
 
 const Splash = () => {
-  const { navigate } = useNavigation();
+  const navigation = useNavigation();
 
   useLayoutEffect(() => {
-    setTimeout(() => {
-      navigate("Onboarding" as never);
+    const timer = setTimeout(() => {
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "HomeTabs" as never }],
+      });
     }, 3000);
-  }, [navigate]);
+    return () => clearTimeout(timer);
+  }, [navigation]);
 
   return (
     <LottieContainer>

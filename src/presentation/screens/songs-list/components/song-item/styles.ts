@@ -10,6 +10,7 @@ export const ItemContainer = styled.View`
   border-radius: 4px;
   background-color: ${colors.secondary.backgroundColor};
   elevation: 3;
+  gap: 8px;
 `;
 
 export const ItemTextContainer = styled.View`

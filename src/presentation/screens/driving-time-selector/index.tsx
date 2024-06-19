@@ -1,9 +1,9 @@
 import { Container } from "@/global/components/container";
 import { MainButton } from "@/global/components/main-button";
+import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
-import Icon from "react-native-vector-icons/MaterialIcons";
 
 type SessionOption = {
   work: number;
@@ -59,7 +59,7 @@ export const DrivingTimeSelector = () => {
             {formatTime(option.rest)}
           </Text>
           {selectedSession === option && (
-            <Icon name="check-circle" size={24} color="#4CAF50" />
+            <Feather name="check-circle" size={24} color="#4CAF50" />
           )}
         </TouchableOpacity>
       ))}

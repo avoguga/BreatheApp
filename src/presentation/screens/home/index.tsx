@@ -5,9 +5,8 @@ import { AndroidImportance } from "@notifee/react-native";
 import { useNavigation } from "@react-navigation/native";
 import { usePomodoroStore } from "../pomodoro/store";
 import { DrivingTime } from "./components/driving-time";
-import { HealthyDiets } from "./components/healthy-diets";
 import { Recommended } from "./components/recommended";
-import { formatTime } from "./utils";
+import { Tips } from "./components/tips";
 
 const Home = () => {
   const { navigate } = useNavigation();
@@ -31,12 +30,6 @@ const Home = () => {
         <MainButton.Text>Mostrar notificaçeun</MainButton.Text>
       </MainButton>
       <DrivingTime style={{ marginBottom: 16 }}>
-        <DrivingTime.Text>
-          Tempo total dirigindo: {formatTime(time)}
-        </DrivingTime.Text>
-        <DrivingTime.Text>
-          Tempo até dar uma pausa: {formatTime(timeUntilBreak)}
-        </DrivingTime.Text>
         <MainButton
           onPress={() => navigate("DrivingTimeSelector" as never)}
           style={{
@@ -48,7 +41,7 @@ const Home = () => {
           <MainButton.Text>Começar a dirigir</MainButton.Text>
         </MainButton>
       </DrivingTime>
-      <HealthyDiets />
+      <Tips />
       <Recommended />
     </Container>
   );

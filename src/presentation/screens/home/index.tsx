@@ -1,13 +1,13 @@
-import { Container } from '@/global/components/container';
-import { MainButton } from '@/global/components/main-button';
-import { displayNotification } from '@/infra/notifee';
-import { AndroidImportance } from '@notifee/react-native';
-import { useNavigation } from '@react-navigation/native';
-import { usePomodoroStore } from '../pomodoro/store';
-import { DrivingTime } from './components/driving-time';
-import { HealthyDiets } from './components/healthy-diets';
-import { Recommended } from './components/recommended';
-import { formatTime } from './utils';
+import { Container } from "@/global/components/container";
+import { MainButton } from "@/global/components/main-button";
+import { displayNotification } from "@/infra/notifee";
+import { AndroidImportance } from "@notifee/react-native";
+import { useNavigation } from "@react-navigation/native";
+import { usePomodoroStore } from "../pomodoro/store";
+import { DrivingTime } from "./components/driving-time";
+import { HealthyDiets } from "./components/healthy-diets";
+import { Recommended } from "./components/recommended";
+import { formatTime } from "./utils";
 
 const Home = () => {
   const { navigate } = useNavigation();
@@ -21,7 +21,7 @@ const Home = () => {
             title: `<p style="color: #f07f07;">AINN GUSZINHOUNNN</p>`,
             body: `<p style="color: #4caf50;">NOTIFICAçAUMZINHAS NN</p>`,
             android: {
-              channelId: 'default',
+              channelId: "default",
               importance: AndroidImportance.HIGH,
               localOnly: true,
             },
@@ -38,10 +38,10 @@ const Home = () => {
           Tempo até dar uma pausa: {formatTime(timeUntilBreak)}
         </DrivingTime.Text>
         <MainButton
-          onPress={() => navigate('Pomodoro' as never)}
+          onPress={() => navigate("DrivingTimeSelector" as never)}
           style={{
-            alignSelf: 'flex-start',
-            backgroundColor: '#336665',
+            alignSelf: "flex-start",
+            backgroundColor: "#336665",
             marginTop: 8,
           }}
         >

@@ -1,12 +1,13 @@
-import { fonts } from '@/presentation/constants/fonts';
-import { ForgotPassword } from '@/presentation/screens/forgot-password';
-import { Login } from '@/presentation/screens/login';
-import { Onboarding } from '@/presentation/screens/onboarding';
-import { Pomodoro } from '@/presentation/screens/pomodoro';
-import { Register } from '@/presentation/screens/register';
-import { Splash } from '@/presentation/screens/splash';
-import { createStackNavigator } from '@react-navigation/stack';
-import { BottomTabNavigation } from '../tab';
+import { fonts } from "@/presentation/constants/fonts";
+import { DrivingTimeSelector } from "@/presentation/screens/driving-time-selector";
+import { ForgotPassword } from "@/presentation/screens/forgot-password";
+import { Login } from "@/presentation/screens/login";
+import { Onboarding } from "@/presentation/screens/onboarding";
+import { Pomodoro } from "@/presentation/screens/pomodoro";
+import { Register } from "@/presentation/screens/register";
+import { Splash } from "@/presentation/screens/splash";
+import { createStackNavigator } from "@react-navigation/stack";
+import { BottomTabNavigation } from "../tab";
 
 const Stack = createStackNavigator();
 
@@ -33,9 +34,10 @@ export const StackNavigation = () => (
       component={BottomTabNavigation}
       options={{
         headerShown: true,
-        title: 'Home',
+        title: "Home",
       }}
     />
+    <Stack.Screen name="DrivingTimeSelector" component={DrivingTimeSelector} />
     <Stack.Screen name="Pomodoro" component={Pomodoro} />
   </Stack.Navigator>
 );

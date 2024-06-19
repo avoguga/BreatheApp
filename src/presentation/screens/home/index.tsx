@@ -3,14 +3,12 @@ import { MainButton } from "@/global/components/main-button";
 import { displayNotification } from "@/infra/notifee";
 import { AndroidImportance } from "@notifee/react-native";
 import { useNavigation } from "@react-navigation/native";
-import { usePomodoroStore } from "../pomodoro/store";
 import { DrivingTime } from "./components/driving-time";
 import { Recommended } from "./components/recommended";
 import { Tips } from "./components/tips";
 
 const Home = () => {
   const { navigate } = useNavigation();
-  const { time, timeUntilBreak } = usePomodoroStore();
 
   return (
     <Container>

@@ -1,7 +1,10 @@
 import { colors } from '@/presentation/constants/colors';
 import { fonts } from '@/presentation/constants/fonts';
 import { DriverTips } from '@/presentation/screens/driver-tips';
-import { DrivingTimeSelector } from '@/presentation/screens/driving-time-selector';
+import {
+  DrivingTimeSelector,
+  SessionOption,
+} from '@/presentation/screens/driving-time-selector';
 import { ForgotPassword } from '@/presentation/screens/forgot-password';
 import { Tip } from '@/presentation/screens/home/components/tips';
 import { Login } from '@/presentation/screens/login';
@@ -23,7 +26,7 @@ export type RootStackParamList = {
   ForgotPassword: undefined;
   HomeTabs: undefined;
   DrivingTimeSelector: undefined;
-  Pomodoro: undefined;
+  Pomodoro: { session: SessionOption };
   DriverTips: {
     tip: Tip;
   };

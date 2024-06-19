@@ -15,7 +15,7 @@ import {
   Title,
 } from './styles';
 
-type SessionOption = {
+export type SessionOption = {
   work: number;
   rest: number;
   total: number;
@@ -41,13 +41,14 @@ export const DrivingTimeSelector = () => {
   const [selectedSession, setSelectedSession] = useState<SessionOption>(
     SessionOptions[0]
   );
-  const { time, timeUntilBreak } = usePomodoroStore();
+  const { time, timeUntilBreak, setMode } = usePomodoroStore();
 
   const handleSelectSession = (session: SessionOption): void => {
     setSelectedSession(session);
   };
 
   const handleStartSession = (): void => {
+    setMode('drive');
     navigation.navigate('Pomodoro', { session: selectedSession });
   };
 

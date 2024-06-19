@@ -6,6 +6,8 @@ export interface CircularProgressProps {
   size: number;
   backgroundColor: string;
   tintColor: string;
+  timeLeft: number;
+  totalDuration: number;
 }
 
 export interface ModeConfig {

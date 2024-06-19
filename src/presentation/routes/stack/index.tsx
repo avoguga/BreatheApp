@@ -1,3 +1,4 @@
+import { colors } from '@/presentation/constants/colors';
 import { fonts } from '@/presentation/constants/fonts';
 import { DriverTips } from '@/presentation/screens/driver-tips';
 import { DrivingTimeSelector } from '@/presentation/screens/driving-time-selector';
@@ -9,7 +10,9 @@ import { Pomodoro } from '@/presentation/screens/pomodoro';
 import { Register } from '@/presentation/screens/register';
 import { SongsList } from '@/presentation/screens/songs-list';
 import { Splash } from '@/presentation/screens/splash';
+import { Feather } from '@expo/vector-icons';
 import { createStackNavigator } from '@react-navigation/stack';
+import { TouchableOpacity } from 'react-native';
 import { BottomTabNavigation } from '../tab';
 
 export type RootStackParamList = {
@@ -38,8 +41,13 @@ export const StackNavigation = () => (
       headerTitleStyle: {
         fontFamily: fonts.bold,
         fontSize: 24,
+        marginTop: 3,
       },
-      headerLeft: () => null,
+      headerLeft: (props) => (
+        <TouchableOpacity {...props} style={{ alignItems: 'center' }}>
+          {props?.backImage && props?.backImage()}
+        </TouchableOpacity>
+      ),
     }}
     initialRouteName="HomeTabs"
   >
@@ -54,6 +62,7 @@ export const StackNavigation = () => (
       options={{
         headerShown: true,
         title: 'Home',
+        headerLeft: () => null,
       }}
     />
     <Stack.Screen
@@ -61,6 +70,13 @@ export const StackNavigation = () => (
       options={{
         headerShown: true,
         title: 'Sessões de condução',
+        headerBackImage: () => (
+          <Feather
+            name="chevron-left"
+            size={32}
+            color={colors.primary.textColor}
+          />
+        ),
       }}
       component={DrivingTimeSelector}
     />
@@ -71,7 +87,17 @@ export const StackNavigation = () => (
       component={SongsList}
       options={{
         headerShown: true,
-        title: 'Músicas',
+        title: '',
+        headerBackImage: () => (
+          <Feather
+            name="chevron-left"
+            size={32}
+            color={colors.secondary.backgroundColor}
+          />
+        ),
+        headerStyle: {
+          backgroundColor: colors.tertiary.backgroundColor,
+        },
       }}
     />
   </Stack.Navigator>

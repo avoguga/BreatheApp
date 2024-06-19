@@ -15,8 +15,8 @@ export const LinearBackground = ({ children }: TouchableOpacityProps) => (
     >
       <Defs>
         <LinearGradient id="grad" x1="0" y1="0" x2="0" y2="1">
-          <Stop offset="0" stopColor="#E5BE00" stopOpacity="0.85" />
-          <Stop offset="1" stopColor="#D9BE36" stopOpacity="0.9" />
+          <Stop offset="0.3" stopColor="#f5cf2f" stopOpacity="1" />
+          <Stop offset="1" stopColor="#D9AD27" stopOpacity="1" />
         </LinearGradient>
       </Defs>
       <Rect x="0" y="0" width="100%" height={height} fill="url(#grad)" />

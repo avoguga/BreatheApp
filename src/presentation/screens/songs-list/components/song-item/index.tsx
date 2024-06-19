@@ -1,11 +1,12 @@
 import { Feather } from '@expo/vector-icons';
-import { ActivityIndicator, Image, TouchableOpacity } from 'react-native';
+import { ActivityIndicator, Image } from 'react-native';
 import { SongItemProps } from '../../types';
 import {
   ItemArtist,
   ItemContainer,
   ItemTextContainer,
   ItemTitle,
+  Player,
 } from './styles';
 
 export const SongItem: React.FC<SongItemProps> = ({
@@ -33,13 +34,17 @@ export const SongItem: React.FC<SongItemProps> = ({
         <ItemTitle>{musicItem.title}</ItemTitle>
         <ItemArtist>{musicItem.artist}</ItemArtist>
       </ItemTextContainer>
-      <TouchableOpacity onPress={handlePress} style={{ marginRight: 8 }}>
+      <Player onPress={handlePress}>
         {isLoading ? (
-          <ActivityIndicator size="small" color="#000" />
+          <ActivityIndicator
+            size="large"
+            color="#fff"
+            style={{ width: 24, height: 24 }}
+          />
         ) : (
-          <Feather name={isPlaying ? 'pause' : 'play'} size={24} color="#000" />
+          <Feather name={isPlaying ? 'pause' : 'play'} size={24} color="#fff" />
         )}
-      </TouchableOpacity>
+      </Player>
     </ItemContainer>
   );
 };

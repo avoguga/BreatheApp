@@ -7,4 +7,7 @@ export const colors = {
     backgroundColor: '#fff',
     textColor: '#fff',
   },
+  tertiary: {
+    backgroundColor: '#f5cf2f',
+  },
 };

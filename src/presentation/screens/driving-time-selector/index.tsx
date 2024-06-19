@@ -1,12 +1,19 @@
-import { Container } from "@/global/components/container";
-import { MainButton } from "@/global/components/main-button";
-import { colors } from "@/presentation/constants/colors";
-import { Feather } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
-import React, { useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { formatTime } from "../home/utils";
-import { usePomodoroStore } from "../pomodoro/store";
+import { Container } from '@/global/components/container';
+import { MainButton } from '@/global/components/main-button';
+import { Feather } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+import React, { useState } from 'react';
+import { formatTime } from '../home/utils';
+import { usePomodoroStore } from '../pomodoro/store';
+import {
+  MainButtonText,
+  OptionText,
+  OptionsContainer,
+  SessionOption,
+  SubTitle,
+  SubTitleContainer,
+  Title,
+} from './styles';
 
 type SessionOption = {
   work: number;
@@ -24,9 +31,9 @@ const SessionOptions: SessionOption[] = [
 const formatTimeInMin = (seconds: number): string => {
   const hours = Math.floor(seconds / 3600);
   const minutes = Math.floor((seconds % 3600) / 60);
-  return `${hours.toString().padStart(2, "0")}:${minutes
+  return `${hours.toString().padStart(2, '0')}:${minutes
     .toString()
-    .padStart(2, "0")}`;
+    .padStart(2, '0')}`;
 };
 
 export const DrivingTimeSelector = () => {
@@ -41,120 +48,44 @@ export const DrivingTimeSelector = () => {
   };
 
   const handleStartSession = (): void => {
-    navigation.navigate("Pomodoro", { session: selectedSession });
+    navigation.navigate('Pomodoro', { session: selectedSession });
   };
 
   return (
-    <Container style={styles.container}>
-      <Text style={styles.title}>Escolha um item para iniciar a sessão</Text>
-      <View style={styles.subTitleContainer}>
+    <Container style={{ padding: 16 }}>
+      <Title>Escolha um item para iniciar a sessão</Title>
+      <SubTitleContainer>
         <Feather name="clock" size={20} />
-        <Text style={styles.subTitle}>
-          Horas trabalhadas hoje: {formatTime(time)}
-        </Text>
-      </View>
-      <View style={styles.subTitleContainer}>
+        <SubTitle>Horas trabalhadas hoje: {formatTime(time)}</SubTitle>
+      </SubTitleContainer>
+      <SubTitleContainer>
         <Feather name="coffee" size={20} />
-        <Text style={styles.subTitle}>
+        <SubTitle>
           Tempo até dar uma pausa: {formatTime(timeUntilBreak)}
-        </Text>
-      </View>
-      <View style={styles.optionsContainer}>
+        </SubTitle>
+      </SubTitleContainer>
+      <OptionsContainer>
         {SessionOptions.map((option, index) => (
-          <TouchableOpacity
+          <SessionOption
             key={index}
-            style={[
-              styles.sessionOption,
-              selectedSession === option && styles.selectedSession,
-            ]}
+            selected={selectedSession === option}
             onPress={() => handleSelectSession(option)}
           >
-            <Text style={styles.optionText}>
-              Trabalho: {formatTimeInMin(option.work)} - Descanso:{" "}
+            <OptionText>
+              Trabalho: {formatTimeInMin(option.work)} - Descanso:{' '}
               {formatTimeInMin(option.rest)}
-            </Text>
+            </OptionText>
             {selectedSession === option && (
               <Feather name="check-circle" size={24} color="#4CAF50" />
             )}
-          </TouchableOpacity>
+          </SessionOption>
         ))}
-      </View>
-      <MainButton style={styles.startButton} onPress={handleStartSession}>
-        <MainButton.Text>Iniciar Sessão</MainButton.Text>
+      </OptionsContainer>
+      <MainButton onPress={handleStartSession}>
+        <MainButtonText>Iniciar Sessão</MainButtonText>
       </MainButton>
     </Container>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    backgroundColor: "#FFF",
-    justifyContent: "flex-start",
-  },
-  title: {
-    fontSize: 24,
-    color: "#333",
-    fontWeight: "bold",
-    marginTop: 20,
-    marginBottom: 20,
-    textAlign: "left",
-  },
-  subTitleContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#FFF8E1",
-    padding: 10,
-    marginBottom: 10,
-    borderRadius: 10,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
-    elevation: 3,
-  },
-  subTitle: {
-    fontSize: 18,
-    color: "#333",
-    marginLeft: 10,
-  },
-  optionsContainer: {
-    flex: 1,
-    width: "100%",
-    padding: 10,
-  },
-  sessionOption: {
-    padding: 20,
-    borderRadius: 15,
-    borderWidth: 1,
-    borderColor: "#DDD",
-    marginBottom: 10,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    backgroundColor: "#FFF",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
-    elevation: 3,
-  },
-  selectedSession: {
-    borderColor: "#4CAF50",
-    backgroundColor: "#E8F5E9",
-  },
-  optionText: {
-    color: "#333",
-    fontSize: 16,
-    textAlign: "center",
-    flex: 1,
-  },
-  startButton: {
-    marginTop: 20,
-    backgroundColor: colors.primary.backgroundColor,
-    borderRadius: 10,
-  },
-});
 
 export default DrivingTimeSelector;

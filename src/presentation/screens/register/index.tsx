@@ -1,7 +1,7 @@
-import { AccountDTO } from "@/dtos/create-account-dto";
-import { authentication } from "@/infra/firebase";
-import { useNavigation } from "@react-navigation/native";
-import React, { useState } from "react";
+import { AccountDTO } from '@/dtos/create-account-dto';
+import { authentication } from '@/infra/firebase';
+import { useNavigation } from '@react-navigation/native';
+import React, { useState } from 'react';
 import {
   Alert,
   StyleSheet,
@@ -9,30 +9,30 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-} from "react-native";
+} from 'react-native';
 
 const Register = () => {
   const { navigate } = useNavigation();
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   const handleRegister = async () => {
     if (password !== confirmPassword) {
-      Alert.alert("Erro", "As senhas não coincidem.");
+      Alert.alert('Erro', 'As senhas não coincidem.');
       return;
     }
 
     const accountDTO: AccountDTO = { email, password };
     try {
       await authentication.createAccount(accountDTO);
-      Alert.alert("Sucesso", "Conta criada com sucesso!");
-      navigate("Login" as never);
+      Alert.alert('Sucesso', 'Conta criada com sucesso!');
+      navigate('Login' as never);
     } catch (error) {
       Alert.alert(
-        "Erro",
-        "Não foi possível criar a conta. Verifique suas informações e tente novamente."
+        'Erro',
+        'Não foi possível criar a conta. Verifique suas informações e tente novamente.'
       );
     }
   };
@@ -71,7 +71,7 @@ const Register = () => {
         onChangeText={setConfirmPassword}
       />
       <TouchableOpacity
-        onPress={() => navigate("Login" as never)}
+        onPress={() => navigate('Login' as never)}
         style={styles.anchors}
       >
         <Text style={styles.register}>
@@ -90,58 +90,58 @@ const Register = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#E5BE00",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: '#E5BE00',
+    alignItems: 'center',
+    justifyContent: 'center',
     padding: 16,
   },
   title: {
     fontSize: 24,
-    fontWeight: "bold",
-    color: "#fff",
+    fontWeight: 'bold',
+    color: '#fff',
     marginBottom: 20,
   },
   input: {
-    width: "100%",
+    width: '100%',
     height: 56,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     borderRadius: 8,
     paddingHorizontal: 16,
     fontSize: 16,
     marginBottom: 10,
   },
   anchors: {
-    width: "100%",
-    alignItems: "flex-start",
+    width: '100%',
+    alignItems: 'flex-start',
     marginBottom: 20,
   },
   register: {
-    color: "#FFF",
-    textAlign: "left",
-    width: "100%",
+    color: '#FFF',
+    textAlign: 'left',
+    width: '100%',
     marginBottom: 10,
   },
   loginLink: {
-    textDecorationLine: "underline",
+    textDecorationLine: 'underline',
   },
   footer: {
-    position: "absolute",
+    position: 'absolute',
     bottom: 20,
-    width: "100%",
-    alignItems: "center",
+    width: '100%',
+    alignItems: 'center',
   },
   button: {
-    width: "100%",
+    width: '100%',
     height: 50,
-    backgroundColor: "#FFF",
+    backgroundColor: '#FFF',
     borderRadius: 8,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   buttonText: {
-    color: "#000",
+    color: '#000',
     fontSize: 16,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
 });
 

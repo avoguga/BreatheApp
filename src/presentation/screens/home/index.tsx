@@ -1,5 +1,7 @@
 import { Container } from '@/global/components/container';
 import { MainButton } from '@/global/components/main-button';
+import { displayNotification } from '@/infra/notifee';
+import { AndroidImportance } from '@notifee/react-native';
 import { useNavigation } from '@react-navigation/native';
 import { usePomodoroStore } from '../pomodoro/store';
 import { DrivingTime } from './components/driving-time';
@@ -13,6 +15,21 @@ const Home = () => {
 
   return (
     <Container>
+      <MainButton
+        onPress={() =>
+          displayNotification({
+            title: `<p style="color: #f07f07;">AINN GUSZINHOUNNN</p>`,
+            body: `<p style="color: #4caf50;">NOTIFICAçAUMZINHAS NN</p>`,
+            android: {
+              channelId: 'default',
+              importance: AndroidImportance.HIGH,
+              localOnly: true,
+            },
+          })
+        }
+      >
+        <MainButton.Text>Mostrar notificaçeun</MainButton.Text>
+      </MainButton>
       <DrivingTime style={{ marginBottom: 16 }}>
         <DrivingTime.Text>
           Tempo total dirigindo: {formatTime(time)}

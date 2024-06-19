@@ -41,14 +41,14 @@ export const DrivingTimeSelector = () => {
   const [selectedSession, setSelectedSession] = useState<SessionOption>(
     SessionOptions[0]
   );
-  const { time, timeUntilBreak, setMode } = usePomodoroStore();
+  const { time, timeUntilBreak, setMode, mode } = usePomodoroStore();
 
   const handleSelectSession = (session: SessionOption): void => {
     setSelectedSession(session);
   };
 
   const handleStartSession = (): void => {
-    setMode('drive');
+    setMode('work');
     navigation.navigate('Pomodoro', { session: selectedSession });
   };
 
@@ -62,7 +62,8 @@ export const DrivingTimeSelector = () => {
       <SubTitleContainer>
         <Feather name="coffee" size={20} />
         <SubTitle>
-          Tempo até dar uma pausa: {formatTime(timeUntilBreak)}
+          Tempo até {mode === 'work' ? 'dar uma pausa' : 'voltar ao trabalho'}:{' '}
+          {formatTime(timeUntilBreak)}
         </SubTitle>
       </SubTitleContainer>
       <OptionsContainer>

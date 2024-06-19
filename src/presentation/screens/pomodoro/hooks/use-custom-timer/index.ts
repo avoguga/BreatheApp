@@ -2,13 +2,15 @@ import { SessionOption } from '@/presentation/screens/driving-time-selector';
 import { useEffect, useState } from 'react';
 import { usePomodoroStore } from '../../store';
 
-type TimerMode = 'work' | 'rest';
-
 export const useCustomTimer = (initialSession: SessionOption) => {
-  const [mode, setMode] = useState<TimerMode>('work');
   const [session, setSession] = useState<SessionOption>(initialSession);
-  const { setTime, time, setTimeUntilBreak, timeUntilBreak } =
+  const { setTime, time, setTimeUntilBreak, timeUntilBreak, setMode, mode } =
     usePomodoroStore();
+
+  useEffect(() => {
+    setMode('work');
+    setTimeUntilBreak(session.work);
+  }, [session]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -21,27 +23,18 @@ export const useCustomTimer = (initialSession: SessionOption) => {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [timeUntilBreak, mode, session]);
+  }, [time, timeUntilBreak, mode, session]);
 
   const switchMode = () => {
-    if (mode === 'work') {
-      setMode('rest');
-      setTimeUntilBreak(session.rest);
-    } else {
-      setMode('work');
-      setTimeUntilBreak(session.work);
-    }
+    const nextMode = mode === 'work' ? 'rest' : 'work';
+    setMode(nextMode);
+    setTimeUntilBreak(nextMode === 'work' ? session.work : session.rest);
   };
 
   const updateSession = (newSession: SessionOption) => {
     if (session.work !== newSession.work || session.rest !== newSession.rest) {
       setSession(newSession);
-      setMode('work');
-      setTimeUntilBreak(newSession.work);
-      return;
     }
-    setMode('rest');
-    setTimeUntilBreak(newSession.rest);
   };
 
   return {

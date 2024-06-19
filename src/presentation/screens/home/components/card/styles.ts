@@ -33,6 +33,7 @@ export const BaseCardText = styled.Text`
   font-size: 20px;
   color: ${colors.secondary.textColor};
   font-family: ${fonts.bold};
+  padding: 0 8px;
 `;
 
 export const Button = styled.TouchableOpacity`

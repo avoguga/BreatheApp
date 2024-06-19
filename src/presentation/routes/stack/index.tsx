@@ -7,6 +7,7 @@ import { Login } from "@/presentation/screens/login";
 import { Onboarding } from "@/presentation/screens/onboarding";
 import { Pomodoro } from "@/presentation/screens/pomodoro";
 import { Register } from "@/presentation/screens/register";
+import { SongsList } from "@/presentation/screens/songs-list";
 import { Splash } from "@/presentation/screens/splash";
 import { createStackNavigator } from "@react-navigation/stack";
 import { BottomTabNavigation } from "../tab";
@@ -22,6 +23,9 @@ export type RootStackParamList = {
   Pomodoro: undefined;
   DriverTips: {
     tip: Tip;
+  };
+  SongsList: {
+    musicType: string;
   };
 };
 
@@ -63,5 +67,13 @@ export const StackNavigation = () => (
     />
     <Stack.Screen name="Pomodoro" component={Pomodoro} />
     <Stack.Screen name="DriverTips" component={DriverTips} />
+    <Stack.Screen
+      name="SongsList"
+      component={SongsList}
+      options={{
+        headerShown: true,
+        title: "Músicas",
+      }}
+    />
   </Stack.Navigator>
 );

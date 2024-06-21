@@ -9,4 +9,5 @@ export const storage = {
   getString: ({ key }: IGetValue) => MMKV.getString(key),
   getNumber: ({ key }: IGetValue) => MMKV.getNumber(key),
   getBoolean: ({ key }: IGetValue) => MMKV.getBoolean(key),
+  getAllKeys: () => MMKV.getAllKeys(),
 };

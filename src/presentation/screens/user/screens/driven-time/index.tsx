@@ -14,8 +14,8 @@ export const DrivenTime = () => {
       }}
     >
       <TimeChart pieData={pieData} />
-      <StatsDetails data={data} pieData={pieData} />
       <LegendBar pieData={pieData} />
+      <StatsDetails data={data} pieData={pieData} />
     </Container>
   );
 };

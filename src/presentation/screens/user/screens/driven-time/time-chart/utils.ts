@@ -1,5 +1,5 @@
 import { storage } from '@/infra/storage';
-import { Averages, WorkedTime } from './types';
+import { Averages, DailyDriveTimes, WorkedTime } from './types';
 
 const calculateAverages = (timeData: number[]): Averages => {
   const totalDays = timeData.length;
@@ -26,21 +26,29 @@ const calculateWorkedTime = (days: number): WorkedTime => {
   };
 };
 
-export const fetchTimeData = async (): Promise<Averages & WorkedTime> => {
+export const fetchTimeData = async (): Promise<
+  Averages & WorkedTime & DailyDriveTimes
+> => {
   const allKeys = storage.getAllKeys();
   const timeKeys = allKeys.filter((key) => key.endsWith('-time'));
 
   const timeData = await Promise.all(
     timeKeys.map(async (key) => {
-      return storage.getNumber({ key }) ?? 0;
+      return {
+        date: key.split('-time')[0].substring(1),
+        timeInSeconds: storage.getNumber({ key }) ?? 0,
+      };
     })
   );
 
-  const averages = calculateAverages(timeData);
+  const timeInSecondsOnly = timeData.map((data) => data.timeInSeconds);
+  const averages = calculateAverages(timeInSecondsOnly);
   const workedTime = calculateWorkedTime(timeData.length);
+  const dailyTimes = timeData;
 
   return {
     ...averages,
     ...workedTime,
+    dailyTimes,
   };
 };

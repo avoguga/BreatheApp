@@ -17,6 +17,7 @@ export const TimeChart: React.FC<TimeChartProps> = ({ pieData }) => {
         donut={true}
         showText={true}
         isAnimated
+        strokeWidth={1}
         labelsPosition="onBorder"
         centerLabelComponent={() => <CenterLabel>Média</CenterLabel>}
       />

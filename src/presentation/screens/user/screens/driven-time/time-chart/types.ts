@@ -4,20 +4,22 @@ export type Averages = {
   monthlyAverage: number;
 };
 
+export type DailyDriveTime = {
+  date: string;
+  timeInSeconds: number;
+};
+
+export interface DailyDriveTimes {
+  dailyTimes: DailyDriveTime[];
+}
+
 export type WorkedTime = {
   daysWorked: number;
   weeksWorked: number;
   monthsWorked: number;
 };
 
-export type AveragesAndWorkTime = {
-  dailyAverage: number;
-  weeklyAverage: number;
-  monthlyAverage: number;
-  daysWorked: number;
-  weeksWorked: number;
-  monthsWorked: number;
-};
+export type AveragesAndWorkTime = Averages & WorkedTime;
 
 export type PieDataItem = {
   value: number;

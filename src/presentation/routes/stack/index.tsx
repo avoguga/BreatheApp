@@ -14,6 +14,7 @@ import { Register } from '@/presentation/screens/register';
 import { SongsList } from '@/presentation/screens/songs-list';
 import { Splash } from '@/presentation/screens/splash';
 import { DrivenTime } from '@/presentation/screens/user/screens/driven-time';
+import { History } from '@/presentation/screens/user/screens/history';
 import { Feather } from '@expo/vector-icons';
 import { createStackNavigator } from '@react-navigation/stack';
 import { TouchableOpacity } from 'react-native';
@@ -28,6 +29,7 @@ export type RootStackParamList = {
   HomeTabs: undefined;
   DrivingTimeSelector: undefined;
   DrivenTime: undefined;
+  History: undefined;
   Pomodoro: { session: SessionOption };
   DriverTips: {
     tip: Tip;
@@ -89,6 +91,15 @@ export const StackNavigation = () => (
     <Stack.Screen
       name="DrivenTime"
       component={DrivenTime}
+      options={{
+        headerShown: true,
+        title: '',
+        headerBackImage: () => <Feather name="chevron-left" size={32} />,
+      }}
+    />
+    <Stack.Screen
+      name="History"
+      component={History}
       options={{
         headerShown: true,
         title: '',

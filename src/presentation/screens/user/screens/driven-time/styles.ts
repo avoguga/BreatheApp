@@ -10,7 +10,8 @@ export const CenterLabel = styled.Text`
 `;
 
 export const StatsContainer = styled.View`
-  padding-left: 16px;
+  justify-content: center;
+  align-items: center;
 `;
 
 export const StatText = styled.Text<{ color: string }>`
@@ -23,8 +24,7 @@ export const StatText = styled.Text<{ color: string }>`
 export const LegendsContainer = styled.View`
   flex-direction: row;
   justify-content: space-around;
-  margin-top: 10px;
+  margin-bottom: 16px;
   flex-wrap: wrap;
-  padding-horizontal: 16px;
-  gap: 8px;
+  padding: 8px;
 `;

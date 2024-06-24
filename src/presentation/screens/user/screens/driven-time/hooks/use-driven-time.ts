@@ -15,17 +15,17 @@ export const useDrivenTime = () => {
   const pieData: PieDataItem[] = [
     {
       value: data.dailyAverage,
-      color: '#336665',
+      color: '#E5BE00',
       label: 'Média diária',
     },
     {
       value: data.weeklyAverage,
-      color: '#338685',
+      color: '#89CFF0',
       label: 'Média semanal',
     },
     {
       value: data.monthlyAverage,
-      color: '#507580',
+      color: '#4682B4',
       label: 'Média mensal',
     },
   ];

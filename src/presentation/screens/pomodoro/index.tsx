@@ -19,8 +19,8 @@ export const Pomodoro = () => {
     <Container
       style={{
         backgroundColor: colors.primary.backgroundColor,
-        justifyContent: 'center',
       }}
+      contentContainerStyle={{ justifyContent: 'center' }}
     >
       <AnimatedCircle
         backgroundColor="transparent"

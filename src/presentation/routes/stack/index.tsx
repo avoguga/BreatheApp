@@ -13,6 +13,7 @@ import { Pomodoro } from '@/presentation/screens/pomodoro';
 import { Register } from '@/presentation/screens/register';
 import { SongsList } from '@/presentation/screens/songs-list';
 import { Splash } from '@/presentation/screens/splash';
+import { DrivenTime } from '@/presentation/screens/user/screens/driven-time';
 import { Feather } from '@expo/vector-icons';
 import { createStackNavigator } from '@react-navigation/stack';
 import { TouchableOpacity } from 'react-native';
@@ -26,6 +27,7 @@ export type RootStackParamList = {
   ForgotPassword: undefined;
   HomeTabs: undefined;
   DrivingTimeSelector: undefined;
+  DrivenTime: undefined;
   Pomodoro: { session: SessionOption };
   DriverTips: {
     tip: Tip;
@@ -48,7 +50,7 @@ export const StackNavigation = () => (
       },
       headerLeft: (props) => (
         <TouchableOpacity {...props} style={{ alignItems: 'center' }}>
-          {props?.backImage && props?.backImage()}
+          {props?.backImage && props?.backImage({ tintColor: '#222' })}
         </TouchableOpacity>
       ),
     }}
@@ -84,6 +86,15 @@ export const StackNavigation = () => (
       component={DrivingTimeSelector}
     />
     <Stack.Screen name="Pomodoro" component={Pomodoro} />
+    <Stack.Screen
+      name="DrivenTime"
+      component={DrivenTime}
+      options={{
+        headerShown: true,
+        title: '',
+        headerBackImage: () => <Feather name="chevron-left" size={32} />,
+      }}
+    />
     <Stack.Screen name="DriverTips" component={DriverTips} />
     <Stack.Screen
       name="SongsList"

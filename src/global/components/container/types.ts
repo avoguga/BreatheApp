@@ -1,3 +1,3 @@
-import { ViewProps } from 'react-native';
+import { ScrollViewProps } from 'react-native';
 
-export interface IContainer extends ViewProps {}
+export interface IContainer extends ScrollViewProps {}

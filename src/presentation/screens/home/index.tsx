@@ -3,7 +3,6 @@ import { MainButton } from '@/global/components/main-button';
 import { useNavigation } from '@react-navigation/native';
 import { DrivingTime } from './components/driving-time';
 import { Recommended } from './components/recommended';
-import { TimeChart } from './components/time-chart';
 import { Tips } from './components/tips';
 
 const Home = () => {
@@ -11,7 +10,6 @@ const Home = () => {
 
   return (
     <Container>
-      <TimeChart />
       <DrivingTime style={{ marginBottom: 16 }}>
         <MainButton
           onPress={() => navigate('DrivingTimeSelector' as never)}

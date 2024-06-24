@@ -1,7 +1,9 @@
+import { displayNotification } from '@/infra/notifee';
 import { SessionOption } from '@/presentation/screens/driving-time-selector';
+import { AndroidImportance } from '@notifee/react-native';
 import { useEffect, useState } from 'react';
+import { Vibration } from 'react-native';
 import { usePomodoroStore } from '../../store';
-
 export const useCustomTimer = (initialSession: SessionOption) => {
   const [session, setSession] = useState<SessionOption>(initialSession);
   const { setTime, time, setTimeUntilBreak, timeUntilBreak, setMode, mode } =
@@ -27,6 +29,18 @@ export const useCustomTimer = (initialSession: SessionOption) => {
 
   const switchMode = () => {
     const nextMode = mode === 'work' ? 'rest' : 'work';
+    if (nextMode === 'rest') {
+      Vibration.vibrate();
+      displayNotification({
+        title: '⏰ Pausa!',
+        body: `Hora de descansar! Relaxe por ${session.rest} minutos. 😌`,
+        android: {
+          channelId: 'default',
+          smallIcon: 'ic_launcher',
+          importance: AndroidImportance.HIGH,
+        },
+      });
+    }
     setMode(nextMode);
     setTimeUntilBreak(nextMode === 'work' ? session.work : session.rest);
   };

@@ -33,6 +33,7 @@ export const Tips = () => {
 
       <HorizontalList
         data={AppDriversTips}
+        style={{ marginBottom: 16 }}
         renderItem={({ item }) => (
           <Card
             onPress={() =>

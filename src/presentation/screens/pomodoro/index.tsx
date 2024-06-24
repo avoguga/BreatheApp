@@ -1,8 +1,8 @@
-import { Container } from '@/global/components/container';
 import { colors } from '@/presentation/constants/colors';
 import { RootStackParamList } from '@/presentation/routes/stack';
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { useEffect } from 'react';
+import { View } from 'react-native';
 import AnimatedCircle from './components/timer';
 import { useCustomTimer } from './hooks/use-custom-timer';
 
@@ -16,11 +16,12 @@ export const Pomodoro = () => {
   }, [session]);
 
   return (
-    <Container
+    <View
       style={{
         backgroundColor: colors.primary.backgroundColor,
+        flex: 1,
+        justifyContent: 'center',
       }}
-      contentContainerStyle={{ justifyContent: 'center' }}
     >
       <AnimatedCircle
         backgroundColor="transparent"
@@ -29,6 +30,6 @@ export const Pomodoro = () => {
         timeLeft={timeUntilBreak}
         totalDuration={mode === 'rest' ? session.rest : session.work}
       />
-    </Container>
+    </View>
   );
 };

@@ -1,8 +1,11 @@
-import { NavigationContainer } from '@react-navigation/native';
-import { StackNavigation } from './stack';
+import { AuthProvider } from "@/contexts/auth-provider";
+import { NavigationContainer } from "@react-navigation/native";
+import { StackNavigation } from "./stack";
 
 export const Routes = () => (
-  <NavigationContainer>
-    <StackNavigation />
-  </NavigationContainer>
+  <AuthProvider>
+    <NavigationContainer>
+      <StackNavigation />
+    </NavigationContainer>
+  </AuthProvider>
 );

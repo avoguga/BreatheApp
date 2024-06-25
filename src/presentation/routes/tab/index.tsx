@@ -1,10 +1,11 @@
-import { colors } from '@/presentation/constants/colors';
-import { fonts } from '@/presentation/constants/fonts';
-import { Home } from '@/presentation/screens/home';
-import { User } from '@/presentation/screens/user';
-import { Feather } from '@expo/vector-icons';
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import { Text } from 'react-native';
+import { colors } from "@/presentation/constants/colors";
+import { fonts } from "@/presentation/constants/fonts";
+import { ForumScreen } from "@/presentation/screens/forum";
+import { Home } from "@/presentation/screens/home";
+import { User } from "@/presentation/screens/user";
+import { Feather } from "@expo/vector-icons";
+import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
+import { Text } from "react-native";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -16,8 +17,8 @@ const TabBarLabel = ({ children }: { children: React.ReactNode }) => {
 export const BottomTabNavigation = () => (
   <Tab.Navigator
     barStyle={{
-      alignItems: 'center',
-      justifyContent: 'center',
+      alignItems: "center",
+      justifyContent: "center",
       paddingHorizontal: 64,
       borderTopWidth: 0.5,
     }}
@@ -33,11 +34,25 @@ export const BottomTabNavigation = () => (
           <Feather
             name="home"
             size={32}
-            color={focused ? colors.primary.textColor : 'gray'}
+            color={focused ? colors.primary.textColor : "gray"}
           />
         ),
       }}
       component={Home}
+    />
+    <Tab.Screen
+      name="ForumScreen"
+      options={{
+        tabBarLabel: (<TabBarLabel>Posts</TabBarLabel>) as unknown as string,
+        tabBarIcon: ({ focused }) => (
+          <Feather
+            name="plus-square"
+            size={32}
+            color={focused ? colors.primary.textColor : "gray"}
+          />
+        ),
+      }}
+      component={ForumScreen}
     />
     <Tab.Screen
       name="User"
@@ -47,7 +62,7 @@ export const BottomTabNavigation = () => (
           <Feather
             name="user"
             size={32}
-            color={focused ? colors.primary.textColor : 'gray'}
+            color={focused ? colors.primary.textColor : "gray"}
           />
         ),
       }}

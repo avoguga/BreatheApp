@@ -13,4 +13,10 @@ export const statOptions: StatOption[] = [
     description: 'Confira o histórico por dia dirigido',
     screen: 'History',
   },
+  {
+    id: 3,
+    title: 'Configurações de Notificações',
+    description: 'Configure o tempo das notificações',
+    screen: 'Settings',
+  },
 ];

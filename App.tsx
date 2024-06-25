@@ -1,4 +1,4 @@
-import { initializeNotifee, scheduleHealthReminders } from '@/infra/notifee';
+import { initializeNotifee } from '@/infra/notifee';
 import { Routes } from '@/presentation/routes';
 import {
   Poppins_400Regular,
@@ -16,7 +16,6 @@ export default function App() {
 
   const setUpNotifee = useCallback(async () => {
     initializeNotifee();
-    scheduleHealthReminders();
   }, []);
 
   useEffect(() => {

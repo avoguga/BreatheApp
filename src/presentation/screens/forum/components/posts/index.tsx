@@ -1,8 +1,16 @@
 import { useAuth } from "@/contexts/auth-provider";
 import firestore from "@react-native-firebase/firestore";
 import React, { FunctionComponent, useEffect, useState } from "react";
-import { Alert, ScrollView, TouchableOpacity } from "react-native";
+import { Alert, Linking, ScrollView, TouchableOpacity } from "react-native";
 import styled from "styled-components/native";
+import {
+  Address,
+  getCurrentLocation,
+  getLocationUrl,
+  MapSelector,
+} from "../maps";
+
+export const GOOGLE_PLACES_API_KEY = "AIzaSyBTGOdz5HRvO6FpqzsUwXzwqWBXzuIGT-M";
 
 interface Comment {
   id: string;
@@ -15,16 +23,25 @@ interface Post {
   username: string;
   date: string;
   title: string;
-  subject: string;
   text: string;
   comments: Comment[];
+  mapUrl: string;
+  address: string;
 }
 
 const Posts: FunctionComponent = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [commentText, setCommentText] = useState("");
   const [showPostForm, setShowPostForm] = useState(false);
-  const [newPost, setNewPost] = useState({ title: "", subject: "", text: "" });
+  const [newPost, setNewPost] = useState({
+    title: "",
+    text: "",
+    mapUrl: "",
+    address: "",
+  });
+  const [isMapVisible, setIsMapVisible] = useState(false);
+  const [selectedAddress, setSelectedAddress] = useState("");
+
   const { currentUser, userName, loading } = useAuth();
 
   useEffect(() => {
@@ -46,11 +63,30 @@ const Posts: FunctionComponent = () => {
     }
   };
 
+  const handleLocationSelect = (addressInfo: Address) => {
+    setNewPost({
+      ...newPost,
+      mapUrl: addressInfo.googleMapsUrl,
+      address: addressInfo.address,
+    });
+    setSelectedAddress(addressInfo.address);
+    setIsMapVisible(false);
+  };
+
   const handleAddPost = async () => {
     if (!currentUser) {
       Alert.alert("Please log in to create posts");
       return;
     }
+
+    const coords = await getCurrentLocation();
+    if (!coords) {
+      Alert.alert("Failed to get location");
+      return;
+    }
+
+    const mapUrl = await getLocationUrl(coords.latitude, coords.longitude);
+
     try {
       await firestore()
         .collection("posts")
@@ -59,8 +95,10 @@ const Posts: FunctionComponent = () => {
           username: userName || "Anonymous",
           date: new Date().toISOString(),
           comments: [],
+          mapUrl: mapUrl.googleMapsUrl,
+          address: mapUrl.address,
         });
-      setNewPost({ title: "", subject: "", text: "" });
+      setNewPost({ title: "", text: "", mapUrl: "", address: "" });
       setShowPostForm(false);
       loadPosts();
     } catch (error) {
@@ -109,51 +147,67 @@ const Posts: FunctionComponent = () => {
             onChangeText={(text) => setNewPost({ ...newPost, title: text })}
           />
           <StyledTextInput
-            placeholder="Subject"
-            value={newPost.subject}
-            onChangeText={(text) => setNewPost({ ...newPost, subject: text })}
-          />
-          <StyledTextInput
             placeholder="Text"
             value={newPost.text}
             onChangeText={(text) => setNewPost({ ...newPost, text: text })}
             multiline
           />
+          <StyledButton onPress={() => setIsMapVisible(true)}>
+            <ButtonText>Select Location on Map</ButtonText>
+          </StyledButton>
+          {selectedAddress && (
+            <ResultLocation>
+              Selected Location: {selectedAddress}
+            </ResultLocation>
+          )}
           <StyledButton onPress={handleAddPost}>
             <ButtonText>Submit Post</ButtonText>
           </StyledButton>
         </PostForm>
       )}
-      {posts
-        .slice()
-        .reverse()
-        .map((post) => (
-          <PostContainer key={post.id}>
-            <Title>
-              {post.title} - {post.username} (
-              {new Date(post.date).toLocaleDateString()})
-            </Title>
-            <Subtitle>{post.subject}</Subtitle>
-            <TextContent>{post.text}</TextContent>
-            <CommentsContainer>
-              {post.comments.map((comment) => (
-                <CommentText key={comment.id}>
-                  {comment.username}: {comment.text}
-                </CommentText>
-              ))}
-            </CommentsContainer>
-            <InputContainer>
-              <StyledTextInput
-                placeholder="Add a comment..."
-                value={commentText}
-                onChangeText={setCommentText}
-              />
-              <StyledButton onPress={() => handleAddComment(post.id)}>
-                <ButtonText>Comment</ButtonText>
-              </StyledButton>
-            </InputContainer>
-          </PostContainer>
-        ))}
+      <MapSelector
+        visible={isMapVisible}
+        onClose={() => setIsMapVisible(false)}
+        onLocationSelect={handleLocationSelect}
+        initialRegion={{
+          latitude: 37.78825,
+          longitude: -122.4324,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        }}
+      />
+      {posts.map((post) => (
+        <PostContainer key={post.id}>
+          <Title>
+            {post.title} - {post.username} (
+            {new Date(post.date).toLocaleDateString()})
+          </Title>
+          <TextContent>{post.text}</TextContent>
+          {post.address && <AddressText>{post.address}</AddressText>}
+          {post.mapUrl && (
+            <StyledButton onPress={() => Linking.openURL(post.mapUrl)}>
+              <ButtonText>View on Google Maps</ButtonText>
+            </StyledButton>
+          )}
+          <CommentsContainer>
+            {post.comments.map((comment) => (
+              <CommentText key={comment.id}>
+                {comment.username}: {comment.text}
+              </CommentText>
+            ))}
+          </CommentsContainer>
+          <InputContainer>
+            <StyledTextInput
+              placeholder="Add a comment..."
+              value={commentText}
+              onChangeText={setCommentText}
+            />
+            <StyledButton onPress={() => handleAddComment(post.id)}>
+              <ButtonText>Comment</ButtonText>
+            </StyledButton>
+          </InputContainer>
+        </PostContainer>
+      ))}
     </ScrollView>
   );
 };
@@ -177,7 +231,7 @@ const PostContainer = styled.View`
   margin: 10px 5px;
   border-radius: 10px;
   elevation: 3;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.9);
 `;
 
 const Title = styled.Text`
@@ -186,16 +240,17 @@ const Title = styled.Text`
   color: #2c3e50;
 `;
 
-const Subtitle = styled.Text`
-  color: #7f8c8d;
-  font-size: 16px;
-  margin-bottom: 10px;
-`;
-
 const TextContent = styled.Text`
   color: #34495e;
   font-size: 16px;
   line-height: 24px;
+  margin-bottom: 15px;
+`;
+
+const AddressText = styled.Text`
+  color: #34495e;
+  font-size: 14px;
+  margin-top: 5px;
   margin-bottom: 15px;
 `;
 
@@ -243,6 +298,14 @@ const ButtonText = styled.Text`
   color: #ffffff;
   font-size: 16px;
   font-weight: bold;
+`;
+
+const ResultLocation = styled.Text`
+  color: #000;
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 10px;
 `;
 
 export default Posts;

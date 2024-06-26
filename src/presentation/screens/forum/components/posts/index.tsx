@@ -3,12 +3,8 @@ import firestore from "@react-native-firebase/firestore";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { Alert, Linking, ScrollView, TouchableOpacity } from "react-native";
 import styled from "styled-components/native";
-import {
-  Address,
-  getCurrentLocation,
-  getLocationUrl,
-  MapSelector,
-} from "../maps";
+import { Address, getCurrentLocation, getLocationUrl } from "../../utils";
+import { MapSelector } from "../maps";
 
 export const GOOGLE_PLACES_API_KEY = "AIzaSyBTGOdz5HRvO6FpqzsUwXzwqWBXzuIGT-M";
 
@@ -25,7 +21,7 @@ interface Post {
   title: string;
   text: string;
   comments: Comment[];
-  mapUrl: string;
+  mapUrl: any;
   address: string;
 }
 
@@ -214,15 +210,18 @@ const Posts: FunctionComponent = () => {
 
 const PostForm = styled.View`
   padding: 20px;
-  margin: 10px 5px;
-  background-color: #f8f9fa;
+  margin: 15px 10px;
+  background-color: #f2f2f2;
+  border-radius: 10px;
+  elevation: 3;
 `;
 
 const AddPostButton = styled(TouchableOpacity)`
-  margin: 10px 20px;
-  padding: 10px;
-  background-color: #3498db;
-  border-radius: 5px;
+  margin: 20px 30px;
+  padding: 15px;
+  background-color: #5cb85c;
+  border-radius: 10px;
+  align-items: center;
 `;
 
 const PostContainer = styled.View`
@@ -233,75 +232,78 @@ const PostContainer = styled.View`
   elevation: 3;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.9);
 `;
-
 const Title = styled.Text`
-  font-size: 20px;
+  font-size: 22px;
   font-weight: bold;
-  color: #2c3e50;
+  color: #333;
+  margin-bottom: 10px;
 `;
 
 const TextContent = styled.Text`
-  color: #34495e;
+  color: #555;
   font-size: 16px;
   line-height: 24px;
   margin-bottom: 15px;
 `;
 
 const AddressText = styled.Text`
-  color: #34495e;
+  color: #555;
   font-size: 14px;
   margin-top: 5px;
   margin-bottom: 15px;
+  font-style: italic;
 `;
 
 const CommentText = styled.Text`
   font-size: 14px;
-  color: #95a5a6;
+  color: #777;
   padding-left: 10px;
   border-left-width: 4px;
-  border-left-color: #ecf0f1;
+  border-left-color: #ddd;
   margin-bottom: 5px;
 `;
 
 const CommentsContainer = styled.View`
   margin-top: 10px;
+  padding-top: 10px;
+  border-top-width: 1px;
+  border-top-color: #ddd;
 `;
 
 const InputContainer = styled.View`
   flex-direction: row;
   align-items: center;
   margin-top: 10px;
-  padding-top: 10px;
-  border-top-width: 1px;
-  border-top-color: #bdc3c7;
 `;
 
 const StyledTextInput = styled.TextInput`
   flex: 1;
   padding: 10px;
   font-size: 16px;
-  color: #34495e;
-  background-color: #ecf0f1;
+  color: #333;
+  background-color: #f8f8f8;
   border-radius: 5px;
   margin-right: 10px;
-  border: 1px solid #cccccc;
+  border: 1px solid #ddd;
+  margin: 10px;
 `;
 
-const StyledButton = styled.TouchableOpacity`
+const StyledButton = styled(TouchableOpacity)`
   padding: 10px 20px;
-  background-color: #3498db;
+  background-color: #007bff;
+  margin: 10px;
   border-radius: 5px;
-  elevation: 3;
+  align-items: center;
 `;
 
 const ButtonText = styled.Text`
-  color: #ffffff;
+  color: #fff;
   font-size: 16px;
   font-weight: bold;
 `;
 
 const ResultLocation = styled.Text`
-  color: #000;
+  color: #007bff;
   font-size: 16px;
   font-weight: bold;
   margin-top: 10px;

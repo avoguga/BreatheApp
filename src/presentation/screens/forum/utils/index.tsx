@@ -5,7 +5,7 @@ import {
 } from "expo-location";
 import { Alert } from "react-native";
 
-const GOOGLE_PLACES_API_KEY = "AIzaSyBTGOdz5HRvO6FpqzsUwXzwqWBXzuIGT-M";
+export const GOOGLE_PLACES_API_KEY = "AIzaSyBTGOdz5HRvO6FpqzsUwXzwqWBXzuIGT-M";
 
 export interface Address {
   address: string;

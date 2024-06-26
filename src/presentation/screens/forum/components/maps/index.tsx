@@ -16,9 +16,9 @@ import {
   Address,
   getCurrentLocation,
   getLocationUrl,
+  GOOGLE_PLACES_API_KEY,
   Location,
 } from "../../utils";
-import { GOOGLE_PLACES_API_KEY } from "../posts";
 
 const fetchPlaceAutocomplete = async (query: string) => {
   const url = `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${query}&key=${GOOGLE_PLACES_API_KEY}&language=en`;
@@ -46,9 +46,8 @@ export const MapSelector: FunctionComponent<{
   visible: boolean;
   onClose: () => void;
   onLocationSelect: (address: Address) => void;
-  initialRegion: Location;
-}> = ({ visible, onClose, onLocationSelect, initialRegion }) => {
-  const [region, setRegion] = useState<Location>(initialRegion);
+}> = ({ visible, onClose, onLocationSelect }) => {
+  const [region, setRegion] = useState<Location | null>(null);
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(
     null
   );
@@ -58,10 +57,10 @@ export const MapSelector: FunctionComponent<{
   const mapRef = useRef<MapView>(null);
 
   useEffect(() => {
-    if (selectedLocation) {
-      setRegion({ ...selectedLocation });
+    if (visible) {
+      goToCurrentLocation();
     }
-  }, [selectedLocation]);
+  }, [visible]);
 
   const handleSearch = async (text: string) => {
     setQuery(text);

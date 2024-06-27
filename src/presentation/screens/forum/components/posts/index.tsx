@@ -19,6 +19,7 @@ interface Comment {
   id: string;
   username: string;
   text: string;
+  color?: string; // Add color to the Comment interface
 }
 
 interface Post {
@@ -75,9 +76,17 @@ const Posts: FunctionComponent<PostsProps> = ({
       const loadedPosts = querySnapshot.docs.map((doc) => ({
         ...(doc.data() as Post),
         id: doc.id,
+        comments: (doc.data() as Post).comments.map((comment) => ({
+          ...comment,
+          color: comment.username !== userName ? getRandomColor() : "#007bff",
+        })),
       }));
-      setPosts(loadedPosts);
-      setFilteredPosts(loadedPosts);
+      // Ordena os posts por data
+      const sortedPosts = loadedPosts.sort(
+        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+      );
+      setPosts(sortedPosts);
+      setFilteredPosts(sortedPosts);
     } catch (error) {
       console.error("Error loading posts: ", error);
     }
@@ -88,6 +97,15 @@ const Posts: FunctionComponent<PostsProps> = ({
       post.title.toLowerCase().includes(text.toLowerCase())
     );
     setFilteredPosts(filtered);
+  };
+
+  const getRandomColor = () => {
+    const letters = "0123456789ABCDEF";
+    let color = "#";
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
   };
 
   const handleLocationSelect = (addressInfo: Address) => {
@@ -138,6 +156,7 @@ const Posts: FunctionComponent<PostsProps> = ({
       id: new Date().getTime().toString(),
       username: userName,
       text: commentText,
+      color: getRandomColor(),
     };
     try {
       await firestore()
@@ -202,15 +221,11 @@ const Posts: FunctionComponent<PostsProps> = ({
                   .map((comment) => (
                     <CommentContainer key={comment.id}>
                       <CommentUsername
-                        isCurrentUser={comment.username === userName}
+                        color={comment.color ?? "#007bff"} // Ensure color is always a string
                       >
                         {comment.username}:
                       </CommentUsername>
-                      <CommentText
-                        isCurrentUser={comment.username === userName}
-                      >
-                        {comment.text}
-                      </CommentText>
+                      <CommentText>{comment.text}</CommentText>
                     </CommentContainer>
                   ))}
                 {post.comments.length > 2 && (
@@ -369,16 +384,16 @@ const CommentContainer = styled.View`
   margin-bottom: 10px;
 `;
 
-const CommentUsername = styled.Text<{ isCurrentUser: boolean }>`
+const CommentUsername = styled.Text<{ color: string }>`
   font-size: 14px;
   font-weight: bold;
-  color: ${({ isCurrentUser }) => (isCurrentUser ? "#007bff" : "#333")};
+  color: ${({ color }) => color};
   margin-right: 5px;
 `;
 
-const CommentText = styled.Text<{ isCurrentUser: boolean }>`
+const CommentText = styled.Text`
   font-size: 14px;
-  color: ${({ isCurrentUser }) => (isCurrentUser ? "#007bff" : "#555")};
+  color: #555;
 `;
 
 const CommentsContainer = styled.View`

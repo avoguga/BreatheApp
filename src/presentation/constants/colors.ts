@@ -10,4 +10,7 @@ export const colors = {
   tertiary: {
     backgroundColor: '#f5cf2f',
   },
+  quaternary: {
+    backgroundColor: '#dedede',
+  },
 };

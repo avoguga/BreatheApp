@@ -24,13 +24,14 @@ export const Recommended = () => {
       <HorizontalList
         data={mockRecomended}
         renderItem={({ item }) => (
-          <Card>
+          <Card
+            onPress={() =>
+              navigation.navigate("SongsList", { musicType: item.title })
+            }
+          >
             <Card.Image source={{ uri: item.uri }}>
               <Card.Text>{item.title}</Card.Text>
               <MainButton
-                onPress={() =>
-                  navigation.navigate("SongsList", { musicType: item.title })
-                }
                 style={{
                   backgroundColor: "transparent",
                   position: "absolute",

@@ -2,16 +2,27 @@ import { colors } from "@/presentation/constants/colors";
 import { RootStackParamList } from "@/presentation/routes/stack";
 import { StackScreenProps } from "@react-navigation/stack";
 import React from "react";
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  Image,
+  Linking,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 type DriverTipsProps = StackScreenProps<RootStackParamList, "DriverTips">;
 
 export const DriverTips: React.FC<DriverTipsProps> = ({ route }) => {
   const { tip } = route.params;
 
-  // Regex pra fazer um fake paragrafo tlg
   const regex = /(?<=[.?!])\s+(?=[A-Z"“])/;
-  const paragraphs = tip.fullArticleText.split(regex).filter((p) => p); // Dividir o texto e filtrar parágrafos vazios
+  const paragraphs = tip.fullArticleText.split(regex).filter((p) => p);
+
+  const openLink = (url: string) => {
+    Linking.openURL(url);
+  };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -24,6 +35,14 @@ export const DriverTips: React.FC<DriverTipsProps> = ({ route }) => {
             {paragraph.trim()}
           </Text>
         ))}
+        <View style={styles.linksContainer}>
+          <Text style={styles.linksTitle}>Leia mais:</Text>
+          {tip.additionalLinks.map((link: any, index: any) => (
+            <TouchableOpacity key={index} onPress={() => openLink(link.url)}>
+              <Text style={styles.link}>{link.title}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
       </View>
     </ScrollView>
   );
@@ -67,5 +86,19 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     paddingHorizontal: 5,
     marginBottom: 10,
+  },
+  linksContainer: {
+    marginTop: 20,
+  },
+  linksTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 10,
+    color: "#333",
+  },
+  link: {
+    fontSize: 16,
+    color: "#007BFF",
+    marginBottom: 5,
   },
 });

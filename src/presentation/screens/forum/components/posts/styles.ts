@@ -8,7 +8,6 @@ export const Container = styled.View`
 `;
 
 export const Header = styled.View`
-  padding: 10px;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
@@ -16,14 +15,13 @@ export const Header = styled.View`
 
 export const SearchContainer = styled.View`
   flex: 1;
-  margin-right: 10px;
 `;
 
 export const SearchInput = styled.TextInput`
   padding: 10px;
   font-size: 16px;
   background-color: #fff;
-  border-radius: 5px;
+  border-radius: 4px;
   border-width: 0.2px;
   font-family: ${fonts.regular};
 `;
@@ -44,11 +42,10 @@ export const PostForm = styled.View`
 
 export const PostContainer = styled.View`
   background-color: #fff;
-  padding: 20px;
-  margin: 15px 10px;
-  border-radius: 10px;
-  elevation: 3;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 8px;
+  margin-top: 16px;
+  border-radius: 4px;
+  border-width: 0.1px;
 `;
 
 export const PostHeader = styled.View`

@@ -1,3 +1,4 @@
+import { useAuth } from '@/contexts/auth-provider';
 import { useState } from 'react';
 import { Alert } from 'react-native';
 import { PostsRepository } from '../repository/post-repository';
@@ -16,7 +17,8 @@ const useNewPost = (
     mapUrl: '',
     address: '',
   });
-  const handleAddPost = async (currentUser: any) => {
+  const { currentUser } = useAuth();
+  const handleAddPost = async () => {
     if (!currentUser) {
       Alert.alert('Please log in to create posts');
       return;

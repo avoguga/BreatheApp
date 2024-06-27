@@ -1,8 +1,8 @@
-import { Ionicons } from "@expo/vector-icons";
-import React, { useState } from "react";
-import { ScrollView, TouchableOpacity } from "react-native";
-import styled from "styled-components/native";
-import Posts from "./components/posts";
+import { Ionicons } from '@expo/vector-icons';
+import React, { useState } from 'react';
+import { ScrollView, TouchableOpacity } from 'react-native';
+import styled from 'styled-components/native';
+import Posts from './components/posts';
 
 export const ForumScreen = () => {
   const [showPostForm, setShowPostForm] = useState(false);
@@ -32,7 +32,7 @@ const FloatingButtonContainer = styled.View`
   bottom: 20px;
   right: 20px;
   align-items: center;
-  z-index: 1; /* Ensure the button stays on top */
+  z-index: 1;
 `;
 
 const FloatingButton = styled(TouchableOpacity)`

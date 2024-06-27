@@ -2,10 +2,7 @@ import { useAuth } from '@/contexts/auth-provider';
 import { colors } from '@/presentation/constants/colors';
 import { fonts } from '@/presentation/constants/fonts';
 import { DriverTips } from '@/presentation/screens/driver-tips';
-import {
-  DrivingTimeSelector,
-  SessionOption,
-} from '@/presentation/screens/driving-time-selector';
+import { SessionOption } from '@/presentation/screens/driving-time-selector';
 import { ForgotPassword } from '@/presentation/screens/forgot-password';
 import { Tip } from '@/presentation/screens/home/components/tips';
 import { Login } from '@/presentation/screens/login';
@@ -78,21 +75,6 @@ export const StackNavigation = () => {
               title: 'Home',
               headerLeft: () => null,
             }}
-          />
-          <Stack.Screen
-            name="DrivingTimeSelector"
-            options={{
-              headerShown: true,
-              title: 'Sessões de condução',
-              headerBackImage: () => (
-                <Feather
-                  name="chevron-left"
-                  size={32}
-                  color={colors.primary.textColor}
-                />
-              ),
-            }}
-            component={DrivingTimeSelector}
           />
           <Stack.Screen name="Pomodoro" component={Pomodoro} />
           <Stack.Screen

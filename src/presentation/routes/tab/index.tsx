@@ -1,11 +1,12 @@
-import { colors } from "@/presentation/constants/colors";
-import { fonts } from "@/presentation/constants/fonts";
-import { ForumScreen } from "@/presentation/screens/forum";
-import { Home } from "@/presentation/screens/home";
-import { User } from "@/presentation/screens/user";
-import { Feather } from "@expo/vector-icons";
-import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import { Text } from "react-native";
+import { colors } from '@/presentation/constants/colors';
+import { fonts } from '@/presentation/constants/fonts';
+import DrivingTimeSelector from '@/presentation/screens/driving-time-selector';
+import { ForumScreen } from '@/presentation/screens/forum';
+import { Home } from '@/presentation/screens/home';
+import { User } from '@/presentation/screens/user';
+import { Feather, Ionicons } from '@expo/vector-icons';
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import { Text } from 'react-native';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -17,8 +18,8 @@ const TabBarLabel = ({ children }: { children: React.ReactNode }) => {
 export const BottomTabNavigation = () => (
   <Tab.Navigator
     barStyle={{
-      alignItems: "center",
-      justifyContent: "center",
+      alignItems: 'center',
+      justifyContent: 'center',
       paddingHorizontal: 64,
       borderTopWidth: 0.5,
     }}
@@ -34,11 +35,25 @@ export const BottomTabNavigation = () => (
           <Feather
             name="home"
             size={32}
-            color={focused ? colors.primary.textColor : "gray"}
+            color={focused ? colors.primary.textColor : 'gray'}
           />
         ),
       }}
       component={Home}
+    />
+    <Tab.Screen
+      name="DrivingTimeSelector"
+      options={{
+        tabBarLabel: (<TabBarLabel>Dirigir</TabBarLabel>) as unknown as string,
+        tabBarIcon: ({ focused }) => (
+          <Ionicons
+            name="car"
+            size={32}
+            color={focused ? colors.primary.textColor : 'gray'}
+          />
+        ),
+      }}
+      component={DrivingTimeSelector}
     />
     <Tab.Screen
       name="ForumScreen"
@@ -48,7 +63,7 @@ export const BottomTabNavigation = () => (
           <Feather
             name="plus-square"
             size={32}
-            color={focused ? colors.primary.textColor : "gray"}
+            color={focused ? colors.primary.textColor : 'gray'}
           />
         ),
       }}
@@ -62,7 +77,7 @@ export const BottomTabNavigation = () => (
           <Feather
             name="user"
             size={32}
-            color={focused ? colors.primary.textColor : "gray"}
+            color={focused ? colors.primary.textColor : 'gray'}
           />
         ),
       }}

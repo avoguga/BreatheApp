@@ -14,6 +14,7 @@ const useLocationSelect = () => {
     isMapVisible,
     setIsMapVisible,
     selectedAddress,
+    setSelectedAddress,
     handleLocationSelect,
   };
 };

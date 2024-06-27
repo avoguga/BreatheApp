@@ -10,8 +10,14 @@ const usePosts = (postsRepository: PostsRepository) => {
   const { currentUser, userName, loading: authLoading } = useAuth();
   const loadedPosts = useLoadPosts(postsRepository);
   const filteredPosts = useFilterPosts(loadedPosts.posts);
-  const newPost = useNewPost(postsRepository, loadedPosts.loadPosts, userName!);
   const location = useLocationSelect();
+  const newPost = useNewPost(
+    postsRepository,
+    loadedPosts.loadPosts,
+    location.selectedAddress,
+    location.setSelectedAddress,
+    userName!
+  );
   const comments = useComments(
     postsRepository,
     loadedPosts.loadPosts,

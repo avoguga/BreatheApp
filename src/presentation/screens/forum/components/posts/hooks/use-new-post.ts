@@ -5,6 +5,8 @@ import { PostsRepository } from '../repository/post-repository';
 const useNewPost = (
   postsRepository: PostsRepository,
   loadPosts: () => Promise<void>,
+  selectedAddress: string,
+  setSelectedAddress: React.Dispatch<React.SetStateAction<string>>,
   userName?: string
 ) => {
   const { addPost } = postsRepository;
@@ -14,8 +16,6 @@ const useNewPost = (
     mapUrl: '',
     address: '',
   });
-  const [selectedAddress, setSelectedAddress] = useState<string>('');
-
   const handleAddPost = async (currentUser: any) => {
     if (!currentUser) {
       Alert.alert('Please log in to create posts');
@@ -49,8 +49,6 @@ const useNewPost = (
   return {
     newPost,
     setNewPost,
-    selectedAddress,
-    setSelectedAddress,
     handleAddPost,
     resetForm,
   };

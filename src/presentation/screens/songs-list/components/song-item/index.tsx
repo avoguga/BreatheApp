@@ -1,13 +1,23 @@
-import { Feather } from '@expo/vector-icons';
-import { ActivityIndicator, Image } from 'react-native';
-import { SongItemProps } from '../../types';
+import { Feather } from "@expo/vector-icons";
+import React, { useEffect, useState } from "react";
+import { ActivityIndicator } from "react-native";
+import { MusicItem } from "../../types";
 import {
-  ItemArtist,
   ItemContainer,
-  ItemTextContainer,
-  ItemTitle,
-  Player,
-} from './styles';
+  ItemInfo,
+  PlayerButton,
+  Progress,
+  ProgressBar,
+  Title,
+} from "./styles";
+
+interface SongItemProps {
+  musicItem: MusicItem;
+  playSound: (file: string, id: string) => void;
+  stopSound: () => void;
+  isPlaying: boolean;
+  isLoading: boolean;
+}
 
 export const SongItem: React.FC<SongItemProps> = ({
   musicItem,
@@ -16,6 +26,26 @@ export const SongItem: React.FC<SongItemProps> = ({
   isPlaying,
   isLoading,
 }) => {
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout | null = null;
+
+    if (isPlaying) {
+      interval = setInterval(() => {
+        setProgress((prev) => (prev < 100 ? prev + 1 : 0));
+      }, 1000);
+    } else if (!isPlaying) {
+      setProgress(0);
+    }
+
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+    };
+  }, [isPlaying]);
+
   const handlePress = () => {
     if (isPlaying) {
       stopSound();
@@ -25,26 +55,22 @@ export const SongItem: React.FC<SongItemProps> = ({
   };
 
   return (
-    <ItemContainer>
-      <Image
-        source={{ uri: musicItem.image }}
-        style={{ width: 50, height: 50, borderRadius: 25 }}
-      />
-      <ItemTextContainer>
-        <ItemTitle>{musicItem.title}</ItemTitle>
-        <ItemArtist>{musicItem.artist}</ItemArtist>
-      </ItemTextContainer>
-      <Player onPress={handlePress}>
+    <ItemContainer onPress={handlePress}>
+      <ItemInfo>
+        <Title>{musicItem.title}</Title>
+        <ProgressBar>
+          <Progress style={{ width: `${progress}%` }} />
+        </ProgressBar>
+      </ItemInfo>
+      <PlayerButton onPress={handlePress}>
         {isLoading ? (
-          <ActivityIndicator
-            size="large"
-            color="#fff"
-            style={{ width: 24, height: 24 }}
-          />
+          <ActivityIndicator size="small" color="#fff" />
         ) : (
-          <Feather name={isPlaying ? 'pause' : 'play'} size={24} color="#fff" />
+          <Feather name={isPlaying ? "pause" : "play"} size={24} color="#fff" />
         )}
-      </Player>
+      </PlayerButton>
     </ItemContainer>
   );
 };
+
+export default SongItem;

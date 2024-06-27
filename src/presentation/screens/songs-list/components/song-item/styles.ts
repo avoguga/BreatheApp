@@ -1,37 +1,52 @@
-import { colors } from '@/presentation/constants/colors';
-import { fonts } from '@/presentation/constants/fonts';
-import styled from 'styled-components/native';
+import { colors } from "@/presentation/constants/colors";
+import { fonts } from "@/presentation/constants/fonts";
+import styled from "styled-components/native";
 
-export const ItemContainer = styled.View`
+export const ItemContainer = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
-  padding: 10px;
-  margin-bottom: 10px;
-  border-radius: 4px;
-  gap: 8px;
-  border-bottom-width: 1px;
-  border-color: ${colors.primary.backgroundColor};
+  justify-content: space-between;
+  padding: 16px;
+  margin: 8px;
+  background-color: #fff;
+  border-radius: 8px;
+  shadow-color: #000;
+  shadow-opacity: 0.1;
+  shadow-radius: 10px;
+  elevation: 5;
 `;
 
-export const ItemTextContainer = styled.View`
+export const ItemInfo = styled.View`
   flex: 1;
+  flex-direction: column;
 `;
 
-export const ItemTitle = styled.Text`
+export const Title = styled.Text`
   font-size: 18px;
+  color: #333;
   font-family: ${fonts.bold};
-  color: ${colors.secondary.textColor};
 `;
 
-export const ItemArtist = styled.Text`
-  font-size: 14px;
-  font-family: ${fonts.regular};
-  color: ${colors.secondary.textColor};
-`;
-
-export const Player = styled.TouchableOpacity.attrs({ activeOpacity: 0.8 })`
+export const PlayerButton = styled.TouchableOpacity`
   padding: 8px;
   border-radius: 50px;
+  background-color: ${colors.primary.backgroundColor};
   align-items: center;
   justify-content: center;
+`;
+
+export const ProgressBar = styled.View`
+  height: 8px;
+  background-color: #e0e0e0;
+  border-radius: 4px;
+  margin-top: 8px;
+  overflow: hidden;
+`;
+
+export const Progress = styled.View`
+  height: 100%;
+  background-color: ${colors.primary.backgroundColor};
+  border-radius: 4px;
+  width: 0;
+  transition: width 0.3s ease-in-out;
 `;

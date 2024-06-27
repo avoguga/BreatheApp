@@ -1,3 +1,5 @@
+import { MainButton } from '@/global/components/main-button';
+import { colors } from '@/presentation/constants/colors';
 import React, { FunctionComponent } from 'react';
 import {
   KeyboardAvoidingView,
@@ -21,6 +23,7 @@ import {
   Header,
   InputContainer,
   NoPostsText,
+  OptionsContainer,
   PostContainer,
   PostForm,
   PostFormContainer,
@@ -146,6 +149,16 @@ const Posts: FunctionComponent<PostsProps> = ({
         >
           <PostFormContainer>
             <PostForm>
+              <MainButton
+                onPress={() => setShowPostForm(false)}
+                style={{
+                  backgroundColor: 'transparent',
+                  alignSelf: 'flex-end',
+                  marginBottom: 16,
+                }}
+              >
+                <MainButton.Icon name="x" size={28} />
+              </MainButton>
               <StyledTextInput
                 placeholder="Title"
                 value={newPost.title}
@@ -157,20 +170,31 @@ const Posts: FunctionComponent<PostsProps> = ({
                 onChangeText={(text) => setNewPost({ ...newPost, text: text })}
                 multiline
               />
-              <StyledButton onPress={() => setIsMapVisible(true)}>
-                <ButtonText>Select Location on Map</ButtonText>
-              </StyledButton>
               {selectedAddress && (
                 <ResultLocation>
                   Selected Location: {selectedAddress}
                 </ResultLocation>
               )}
-              <StyledButton onPress={handleAddPost}>
-                <ButtonText>Submit Post</ButtonText>
-              </StyledButton>
-              <StyledButton onPress={() => setShowPostForm(false)}>
-                <ButtonText>Cancel</ButtonText>
-              </StyledButton>
+              <OptionsContainer>
+                <MainButton
+                  onPress={() => setIsMapVisible(true)}
+                  style={{ backgroundColor: 'transparent' }}
+                >
+                  <MainButton.Icon name="map" size={24} />
+                </MainButton>
+                <MainButton
+                  onPress={handleAddPost}
+                  style={{ backgroundColor: 'transparent' }}
+                >
+                  <MainButton.Icon
+                    name="send"
+                    size={24}
+                    color={
+                      !!selectedAddress ? colors.primary.textColor : 'gray'
+                    }
+                  />
+                </MainButton>
+              </OptionsContainer>
             </PostForm>
           </PostFormContainer>
         </KeyboardAvoidingView>

@@ -247,4 +247,5 @@ const ResultLocation = styled.Text`
   font-weight: bold;
   margin-top: 10px;
   margin-bottom: 10px;
+  padding-horizontal: 16px;
 `;

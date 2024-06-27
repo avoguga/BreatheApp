@@ -1,24 +1,25 @@
-import axios from "axios";
-import React, { FunctionComponent, useEffect, useRef, useState } from "react";
+import { MainButton } from '@/global/components/main-button';
+import { Ionicons } from '@expo/vector-icons';
+import axios from 'axios';
+import React, { FunctionComponent, useEffect, useRef, useState } from 'react';
 import {
   Alert,
-  Button,
   Modal,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
-} from "react-native";
-import Autocomplete from "react-native-autocomplete-input";
-import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
-import styled from "styled-components/native";
+} from 'react-native';
+import Autocomplete from 'react-native-autocomplete-input';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import styled from 'styled-components/native';
 import {
   Address,
-  getCurrentLocation,
-  getLocationUrl,
   GOOGLE_PLACES_API_KEY,
   Location,
-} from "../../utils";
+  getCurrentLocation,
+  getLocationUrl,
+} from '../../utils';
 
 const fetchPlaceAutocomplete = async (query: string) => {
   const url = `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${query}&key=${GOOGLE_PLACES_API_KEY}&language=en`;
@@ -26,7 +27,7 @@ const fetchPlaceAutocomplete = async (query: string) => {
     const response = await axios.get(url);
     return response.data.predictions;
   } catch (error) {
-    console.error("Error fetching place autocomplete: ", error);
+    console.error('Error fetching place autocomplete: ', error);
     return [];
   }
 };
@@ -37,7 +38,7 @@ const fetchPlaceDetails = async (placeId: string) => {
     const response = await axios.get(url);
     return response.data.result;
   } catch (error) {
-    console.error("Error fetching place details: ", error);
+    console.error('Error fetching place details: ', error);
     return null;
   }
 };
@@ -51,8 +52,8 @@ export const MapSelector: FunctionComponent<{
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(
     null
   );
-  const [address, setAddress] = useState<string>("");
-  const [query, setQuery] = useState<string>("");
+  const [address, setAddress] = useState<string>('');
+  const [query, setQuery] = useState<string>('');
   const [suggestions, setSuggestions] = useState<any[]>([]);
   const mapRef = useRef<MapView>(null);
 
@@ -119,11 +120,11 @@ export const MapSelector: FunctionComponent<{
           mapRef.current.animateToRegion(updatedRegion, 1000);
         }
       } else {
-        Alert.alert("Error", "Unable to fetch current location.");
+        Alert.alert('Error', 'Unable to fetch current location.');
       }
     } catch (error) {
-      console.error("Error getting the current location: ", error);
-      Alert.alert("Error", "Failed to fetch current location.");
+      console.error('Error getting the current location: ', error);
+      Alert.alert('Error', 'Failed to fetch current location.');
     }
   };
 
@@ -138,8 +139,8 @@ export const MapSelector: FunctionComponent<{
       onClose();
     } else {
       Alert.alert(
-        "No location selected",
-        "Please select a location on the map."
+        'No location selected',
+        'Please select a location on the map.'
       );
     }
   };
@@ -187,14 +188,34 @@ export const MapSelector: FunctionComponent<{
         >
           {selectedLocation && <Marker coordinate={selectedLocation} />}
         </MapView>
-        <View>
-          <Button title="Go to My Location" onPress={goToCurrentLocation} />
-          <Button title="Confirm Location" onPress={confirmLocation} />
-          <Button title="Close" onPress={onClose} />
-          {address ? (
-            <ResultLocation>Selected Address: {address}</ResultLocation>
-          ) : null}
+        <View
+          style={{
+            position: 'absolute',
+            right: 16,
+            zIndex: 10,
+            gap: 8,
+            width: 48,
+            height: 48,
+            top: '50%',
+          }}
+        >
+          <MainButton>
+            <MainButton.Icon
+              name="map-pin"
+              size={28}
+              onPress={confirmLocation}
+            />
+          </MainButton>
+          <MainButton onPress={goToCurrentLocation}>
+            <Ionicons name="locate" size={28} />
+          </MainButton>
+          <MainButton onPress={onClose}>
+            <MainButton.Icon name="check" size={28} />
+          </MainButton>
         </View>
+        {address ? (
+          <ResultLocation>Selected Address: {address}</ResultLocation>
+        ) : null}
       </View>
     </Modal>
   );
@@ -204,7 +225,7 @@ const styles = StyleSheet.create({
   autocompleteContainer: {
     flex: 1,
     left: 0,
-    position: "absolute",
+    position: 'absolute',
     right: 0,
     top: 0,
     zIndex: 1,
@@ -214,9 +235,9 @@ const styles = StyleSheet.create({
   },
   suggestionsList: {
     maxHeight: 200,
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderWidth: 1,
-    borderColor: "#ddd",
+    borderColor: '#ddd',
   },
 });
 

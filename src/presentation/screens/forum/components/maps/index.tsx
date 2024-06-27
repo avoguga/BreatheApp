@@ -1,18 +1,12 @@
 import { MainButton } from '@/global/components/main-button';
+import { colors } from '@/presentation/constants/colors';
+import { fonts } from '@/presentation/constants/fonts';
 import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
 import React, { FunctionComponent, useEffect, useRef, useState } from 'react';
-import {
-  Alert,
-  Modal,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { Alert, Dimensions, Modal, Text, TouchableOpacity } from 'react-native';
 import Autocomplete from 'react-native-autocomplete-input';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
-import styled from 'styled-components/native';
 import {
   Address,
   GOOGLE_PLACES_API_KEY,
@@ -20,6 +14,14 @@ import {
   getCurrentLocation,
   getLocationUrl,
 } from '../../utils';
+import {
+  ButtonContainer,
+  Container,
+  MapContainer,
+  PaddingView,
+  ResultLocationText,
+  Separator,
+} from './styles';
 
 const fetchPlaceAutocomplete = async (query: string) => {
   const url = `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${query}&key=${GOOGLE_PLACES_API_KEY}&language=en`;
@@ -147,31 +149,62 @@ export const MapSelector: FunctionComponent<{
 
   return (
     <Modal visible={visible} animationType="slide">
-      <View style={{ flex: 1 }}>
-        <View style={{ padding: 10 }}>
+      <Container>
+        <PaddingView>
           <Autocomplete
             data={suggestions}
             defaultValue={query}
             onChangeText={handleSearch}
             placeholder="Search for places..."
-            containerStyle={styles.autocompleteContainer}
-            inputContainerStyle={styles.inputContainer}
-            listContainerStyle={styles.suggestionsList}
+            containerStyle={{
+              flex: 1,
+              left: 0,
+              position: 'absolute',
+              right: 0,
+              top: 0,
+              zIndex: 1,
+            }}
+            inputContainerStyle={{
+              borderWidth: 0.5,
+              backgroundColor: colors.secondary.backgroundColor,
+              paddingHorizontal: 16,
+            }}
+            style={{
+              height: 56,
+              fontFamily: 'regular',
+            }}
+            listContainerStyle={{
+              backgroundColor: colors.secondary.backgroundColor,
+              borderColor: '#ddd',
+              maxHeight: 200,
+            }}
             flatListProps={{
               keyExtractor: (item) => item.place_id,
+              contentContainerStyle: {
+                width: Dimensions.get('screen').width,
+                gap: 8,
+              },
+              ItemSeparatorComponent: Separator,
               renderItem: ({ item }) => (
                 <TouchableOpacity
                   onPress={() => handleSelectSuggestion(item.place_id)}
+                  style={{ paddingHorizontal: 16 }}
                 >
-                  <Text>{item.description}</Text>
+                  <Text
+                    style={{
+                      fontFamily: fonts.regular,
+                      width: '90%',
+                    }}
+                  >
+                    {item.description}
+                  </Text>
                 </TouchableOpacity>
               ),
             }}
           />
-        </View>
-        <MapView
+        </PaddingView>
+        <MapContainer
           ref={mapRef}
-          style={{ flex: 1 }}
           region={region as any}
           onRegionChangeComplete={setRegion}
           provider={PROVIDER_GOOGLE}
@@ -187,65 +220,34 @@ export const MapSelector: FunctionComponent<{
           }}
         >
           {selectedLocation && <Marker coordinate={selectedLocation} />}
-        </MapView>
-        <View
-          style={{
-            position: 'absolute',
-            right: 16,
-            zIndex: 10,
-            gap: 8,
-            width: 48,
-            height: 48,
-            top: '50%',
-          }}
-        >
-          <MainButton>
+        </MapContainer>
+        <ButtonContainer>
+          <MainButton onPress={confirmLocation}>
             <MainButton.Icon
               name="map-pin"
               size={28}
-              onPress={confirmLocation}
+              color={colors.secondary.backgroundColor}
             />
           </MainButton>
           <MainButton onPress={goToCurrentLocation}>
-            <Ionicons name="locate" size={28} />
+            <Ionicons
+              name="locate"
+              size={28}
+              color={colors.secondary.backgroundColor}
+            />
           </MainButton>
           <MainButton onPress={onClose}>
-            <MainButton.Icon name="check" size={28} />
+            <MainButton.Icon
+              name="x"
+              size={28}
+              color={colors.secondary.backgroundColor}
+            />
           </MainButton>
-        </View>
+        </ButtonContainer>
         {address ? (
-          <ResultLocation>Selected Address: {address}</ResultLocation>
+          <ResultLocationText>Selected Address: {address}</ResultLocationText>
         ) : null}
-      </View>
+      </Container>
     </Modal>
   );
 };
-
-const styles = StyleSheet.create({
-  autocompleteContainer: {
-    flex: 1,
-    left: 0,
-    position: 'absolute',
-    right: 0,
-    top: 0,
-    zIndex: 1,
-  },
-  inputContainer: {
-    borderWidth: 0,
-  },
-  suggestionsList: {
-    maxHeight: 200,
-    backgroundColor: 'white',
-    borderWidth: 1,
-    borderColor: '#ddd',
-  },
-});
-
-const ResultLocation = styled.Text`
-  color: #000;
-  font-size: 16px;
-  font-weight: bold;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  padding-horizontal: 16px;
-`;

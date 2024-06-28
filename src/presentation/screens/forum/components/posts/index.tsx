@@ -1,18 +1,18 @@
-import { MainButton } from '@/global/components/main-button';
-import { colors } from '@/presentation/constants/colors';
-import React, { FunctionComponent } from 'react';
+import { MainButton } from "@/global/components/main-button";
+import { colors } from "@/presentation/constants/colors";
+import React, { FunctionComponent } from "react";
 import {
   KeyboardAvoidingView,
   Linking,
   Modal,
   Platform,
   ScrollView,
-} from 'react-native';
-import { Title } from 'react-native-paper';
-import { Container } from '../..';
-import { MapSelector } from '../maps';
-import usePosts from './hooks/use-posts';
-import { usePostsRepository } from './repository/implementations/use-post-repository';
+} from "react-native";
+import { Title } from "react-native-paper";
+import { Container } from "../..";
+import { MapSelector } from "../maps";
+import usePosts from "./hooks/use-posts";
+import { usePostsRepository } from "./repository/implementations/use-post-repository";
 import {
   AddressText,
   ButtonText,
@@ -38,7 +38,7 @@ import {
   TextContent,
   ToggleCommentsButton,
   ToggleCommentsText,
-} from './styles';
+} from "./styles";
 
 interface PostsProps {
   showPostForm: boolean;
@@ -60,6 +60,7 @@ const Posts: FunctionComponent<PostsProps> = ({
     newPost,
     setNewPost,
     selectedAddress,
+    selectedMapUrl,
     handleAddPost,
     commentText,
     setCommentText,
@@ -108,7 +109,7 @@ const Posts: FunctionComponent<PostsProps> = ({
                   .slice(0, expandedComments[post.id] ? undefined : 2)
                   .map((comment) => (
                     <CommentContainer key={comment.id}>
-                      <CommentUsername color={comment.color ?? '#007bff'}>
+                      <CommentUsername color={comment.color ?? "#007bff"}>
                         {comment.username}:
                       </CommentUsername>
                       <CommentText>{comment.text}</CommentText>
@@ -118,8 +119,8 @@ const Posts: FunctionComponent<PostsProps> = ({
                   <ToggleCommentsButton onPress={() => toggleComments(post.id)}>
                     <ToggleCommentsText>
                       {expandedComments[post.id]
-                        ? 'Show less comments'
-                        : 'Show more comments'}
+                        ? "Show less comments"
+                        : "Show more comments"}
                     </ToggleCommentsText>
                   </ToggleCommentsButton>
                 )}
@@ -144,7 +145,7 @@ const Posts: FunctionComponent<PostsProps> = ({
       </ScrollView>
       <Modal visible={showPostForm} animationType="slide" transparent>
         <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
           style={{ flex: 1 }}
         >
           <PostFormContainer>
@@ -152,8 +153,8 @@ const Posts: FunctionComponent<PostsProps> = ({
               <MainButton
                 onPress={() => setShowPostForm(false)}
                 style={{
-                  backgroundColor: 'transparent',
-                  alignSelf: 'flex-end',
+                  backgroundColor: "transparent",
+                  alignSelf: "flex-end",
                   marginBottom: 16,
                 }}
               >
@@ -178,19 +179,19 @@ const Posts: FunctionComponent<PostsProps> = ({
               <OptionsContainer>
                 <MainButton
                   onPress={() => setIsMapVisible(true)}
-                  style={{ backgroundColor: 'transparent' }}
+                  style={{ backgroundColor: "transparent" }}
                 >
                   <MainButton.Icon name="map" size={24} />
                 </MainButton>
                 <MainButton
                   onPress={handleAddPost}
-                  style={{ backgroundColor: 'transparent' }}
+                  style={{ backgroundColor: "transparent" }}
                 >
                   <MainButton.Icon
                     name="send"
                     size={24}
                     color={
-                      !!selectedAddress ? colors.primary.textColor : 'gray'
+                      !!selectedAddress ? colors.primary.textColor : "gray"
                     }
                   />
                 </MainButton>

@@ -1,3 +1,4 @@
+import { storage } from '@/infra/storage';
 import { useNavigation } from '@react-navigation/native';
 import LottieView from 'lottie-react-native';
 import { useLayoutEffect } from 'react';
@@ -6,12 +7,19 @@ import { LottieContainer, SplashText } from './styles';
 
 const Splash = () => {
   const navigation = useNavigation();
+  const { getString } = storage;
 
   useLayoutEffect(() => {
     const timer = setTimeout(() => {
       navigation.reset({
         index: 0,
-        routes: [{ name: 'Onboarding' as never }],
+        routes: [
+          {
+            name: (getString({ key: 'hasShownOnboarding' })
+              ? 'HomeTabs'
+              : 'Onboarding') as never,
+          },
+        ],
       });
     }, 3000);
     return () => clearTimeout(timer);

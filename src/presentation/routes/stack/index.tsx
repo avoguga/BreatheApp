@@ -58,7 +58,7 @@ export const StackNavigation = () => {
           marginTop: 3,
         },
       }}
-      initialRouteName="Settings"
+      initialRouteName="Splash"
     >
       <Stack.Screen name="Splash" component={Splash} />
       <Stack.Screen name="Onboarding" component={Onboarding} />

@@ -1,23 +1,28 @@
-import React, { useEffect, useState } from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { MMKV } from "react-native-mmkv";
+import { useLanguageStore } from '@/infra/language';
+import { useNavigation } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { MMKV } from 'react-native-mmkv';
+import strings from './utils/strings';
 
 // Inicialize o MMKV
 const storage = new MMKV();
 
-export function Onboarding({ navigation }: any) {
+export function Onboarding() {
   const [showOnboarding, setShowOnboarding] = useState(true);
+  const { reset } = useNavigation();
+  const language = useLanguageStore((state) => state.language);
 
   const navigateToHome = () => {
-    navigation.reset({
+    reset({
       index: 0,
-      routes: [{ name: "Login" }],
+      routes: [{ name: 'Login' as never }],
     });
   };
 
   const checkOnboarding = () => {
     try {
-      const hasShownOnboarding = storage.getString("hasShownOnboarding");
+      const hasShownOnboarding = storage.getString('hasShownOnboarding');
       if (hasShownOnboarding) {
         setShowOnboarding(false);
         navigateToHome();
@@ -33,7 +38,7 @@ export function Onboarding({ navigation }: any) {
 
   const onFinishOnboarding = () => {
     try {
-      storage.set("hasShownOnboarding", "true");
+      storage.set('hasShownOnboarding', 'true');
       navigateToHome();
     } catch (error) {
       console.error(error);
@@ -47,17 +52,15 @@ export function Onboarding({ navigation }: any) {
   return (
     <View style={styles.container}>
       <View style={styles.content}>
-        <Text style={styles.title}>Seja bem-vindo ao Breathe!</Text>
+        <Text style={styles.title}>{strings[language].welcome}</Text>
         <Image
-          source={require("../../../../assets/imgs/betterwaywork.png")}
+          source={require('../../../../assets/imgs/betterwaywork.png')}
           style={styles.image}
         />
-        <Text style={styles.subtitle}>
-          Torne suas viagens mais seguras e saudáveis.
-        </Text>
+        <Text style={styles.subtitle}>{strings[language].subtitle}</Text>
       </View>
       <TouchableOpacity style={styles.button} onPress={onFinishOnboarding}>
-        <Text style={styles.buttonText}>Iniciar</Text>
+        <Text style={styles.buttonText}>{strings[language].start}</Text>
       </TouchableOpacity>
     </View>
   );
@@ -66,40 +69,40 @@ export function Onboarding({ navigation }: any) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "space-around",
-    alignItems: "center",
+    justifyContent: 'space-around',
+    alignItems: 'center',
     paddingHorizontal: 20,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
   },
   content: {
-    alignItems: "center",
+    alignItems: 'center',
   },
   title: {
     fontSize: 24,
-    fontWeight: "bold",
-    textAlign: "center",
-    color: "#1C2633",
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: '#1C2633',
   },
   image: {
     width: 370,
     height: 370,
-    resizeMode: "contain",
+    resizeMode: 'contain',
   },
   subtitle: {
     fontSize: 16,
-    textAlign: "center",
+    textAlign: 'center',
     width: 200,
-    color: "#1C2633",
+    color: '#1C2633',
   },
   button: {
-    width: "100%",
-    alignItems: "center",
-    backgroundColor: "#454235",
+    width: '100%',
+    alignItems: 'center',
+    backgroundColor: '#454235',
     paddingVertical: 15,
     borderRadius: 10,
   },
   buttonText: {
-    color: "#fff",
+    color: '#fff',
     fontSize: 16,
   },
 });

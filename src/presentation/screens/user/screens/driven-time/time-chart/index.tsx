@@ -1,9 +1,13 @@
+import { useLanguageStore } from '@/infra/language';
 import React from 'react';
 import { View } from 'react-native';
 import { CenterLabel, StyledPieChart } from '../styles';
 import { TimeChartProps } from './types';
+import strings from './utils';
 
 export const TimeChart: React.FC<TimeChartProps> = ({ pieData }) => {
+  const language = useLanguageStore((state) => state.language);
+
   return (
     <View
       style={{
@@ -19,7 +23,9 @@ export const TimeChart: React.FC<TimeChartProps> = ({ pieData }) => {
         isAnimated
         strokeWidth={1}
         labelsPosition="onBorder"
-        centerLabelComponent={() => <CenterLabel>Média</CenterLabel>}
+        centerLabelComponent={() => (
+          <CenterLabel>{strings[language].average}</CenterLabel>
+        )}
       />
     </View>
   );

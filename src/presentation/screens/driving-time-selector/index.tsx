@@ -1,5 +1,6 @@
 import { Container } from '@/global/components/container';
 import { MainButton } from '@/global/components/main-button';
+import { useLanguageStore } from '@/infra/language';
 import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
@@ -14,6 +15,7 @@ import {
   SubTitleContainer,
   Title,
 } from './styles';
+import strings from './utils/strings';
 
 export type SessionOption = {
   work: number;
@@ -42,6 +44,7 @@ export const DrivingTimeSelector = () => {
     SessionOptions[0]
   );
   const { time, timeUntilBreak, setMode, mode } = usePomodoroStore();
+  const language = useLanguageStore((state) => state.language);
 
   const handleSelectSession = (session: SessionOption): void => {
     setSelectedSession(session);
@@ -54,16 +57,21 @@ export const DrivingTimeSelector = () => {
 
   return (
     <Container style={{ padding: 16 }}>
-      <Title>Escolha um item para iniciar a sessão</Title>
+      <Title>{strings[language].selectSession}</Title>
       <SubTitleContainer>
         <Feather name="clock" size={20} />
-        <SubTitle>Horas trabalhadas hoje: {formatTime(time)}</SubTitle>
+        <SubTitle>
+          {strings[language].workedHoursToday}: {formatTime(time)}
+        </SubTitle>
       </SubTitleContainer>
       <SubTitleContainer>
         <Feather name="coffee" size={20} />
         <SubTitle>
-          Tempo até {mode === 'work' ? 'dar uma pausa' : 'voltar ao trabalho'}:{' '}
-          {formatTime(timeUntilBreak)}
+          {strings[language].timeUntil}{' '}
+          {mode === 'work'
+            ? strings[language].takeABreak
+            : strings[language].backToWork}
+          : {formatTime(timeUntilBreak)}
         </SubTitle>
       </SubTitleContainer>
       <OptionsContainer>
@@ -74,8 +82,8 @@ export const DrivingTimeSelector = () => {
             onPress={() => handleSelectSession(option)}
           >
             <OptionText>
-              Trabalho: {formatTimeInMin(option.work)} - Descanso:{' '}
-              {formatTimeInMin(option.rest)}
+              {strings[language].work}: {formatTimeInMin(option.work)} -{' '}
+              {strings[language].rest}: {formatTimeInMin(option.rest)}
             </OptionText>
             {selectedSession === option && (
               <Feather name="check-circle" size={24} color="#4CAF50" />
@@ -84,7 +92,7 @@ export const DrivingTimeSelector = () => {
         ))}
       </OptionsContainer>
       <MainButton onPress={handleStartSession}>
-        <MainButtonText>Iniciar Sessão</MainButtonText>
+        <MainButtonText>{strings[language].startSession}</MainButtonText>
       </MainButton>
     </Container>
   );

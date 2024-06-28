@@ -52,3 +52,14 @@ export const fetchTimeData = async (): Promise<
     dailyTimes,
   };
 };
+
+const strings = {
+  en: {
+    average: 'Average',
+  },
+  pt: {
+    average: 'Média',
+  },
+};
+
+export default strings;

@@ -1,5 +1,6 @@
+import { useLanguageStore } from '@/infra/language';
 import { format, parseISO } from 'date-fns';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FlatList } from 'react-native';
 import { DailyDriveTime } from '../driven-time/time-chart/types';
 import { fetchTimeData } from '../driven-time/time-chart/utils';
@@ -10,9 +11,11 @@ import {
   Separator,
   TimeText,
 } from './styles';
+import strings from './utils/strings';
 
 export const History = () => {
   const [dailyTimes, setDailyTimes] = useState<DailyDriveTime[]>([]);
+  const language = useLanguageStore((state) => state.language);
 
   useEffect(() => {
     const loadData = async () => {
@@ -29,10 +32,15 @@ export const History = () => {
         data={dailyTimes}
         renderItem={({ item }) => (
           <ItemContainer>
-            <DateText>{format(parseISO(item.date), 'dd-MM-yyyy')}</DateText>
-            <TimeText>{(item.timeInSeconds / 3600).toFixed(2)} horas</TimeText>
+            <DateText>
+              {format(parseISO(item.date), strings[language].dateFormat)}
+            </DateText>
+            <TimeText>
+              {(item.timeInSeconds / 3600).toFixed(2)} {strings[language].hours}
+            </TimeText>
           </ItemContainer>
         )}
+        keyExtractor={(item) => item.date}
         ItemSeparatorComponent={() => <Separator />}
       />
     </Container>

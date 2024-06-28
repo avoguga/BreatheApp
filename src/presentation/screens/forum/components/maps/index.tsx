@@ -1,4 +1,5 @@
 import { MainButton } from '@/global/components/main-button';
+import { useLanguageStore } from '@/infra/language';
 import { colors } from '@/presentation/constants/colors';
 import { fonts } from '@/presentation/constants/fonts';
 import { Ionicons } from '@expo/vector-icons';
@@ -22,6 +23,7 @@ import {
   ResultLocationText,
   Separator,
 } from './styles';
+import strings from './utils/strings';
 
 const fetchPlaceAutocomplete = async (query: string) => {
   const url = `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${query}&key=${GOOGLE_PLACES_API_KEY}&language=en`;
@@ -58,6 +60,7 @@ export const MapSelector: FunctionComponent<{
   const [query, setQuery] = useState<string>('');
   const [suggestions, setSuggestions] = useState<any[]>([]);
   const mapRef = useRef<MapView>(null);
+  const language = useLanguageStore((state) => state.language);
 
   useEffect(() => {
     if (visible) {
@@ -122,11 +125,11 @@ export const MapSelector: FunctionComponent<{
           mapRef.current.animateToRegion(updatedRegion, 1000);
         }
       } else {
-        Alert.alert('Error', 'Unable to fetch current location.');
+        Alert.alert('Error', strings[language].unableToFetchLocation);
       }
     } catch (error) {
       console.error('Error getting the current location: ', error);
-      Alert.alert('Error', 'Failed to fetch current location.');
+      Alert.alert('Error', strings[language].unableToFetchLocation);
     }
   };
 
@@ -141,8 +144,8 @@ export const MapSelector: FunctionComponent<{
       onClose();
     } else {
       Alert.alert(
-        'No location selected',
-        'Please select a location on the map.'
+        strings[language].noLocationSelected,
+        strings[language].selectLocationPrompt
       );
     }
   };
@@ -155,7 +158,7 @@ export const MapSelector: FunctionComponent<{
             data={suggestions}
             defaultValue={query}
             onChangeText={handleSearch}
-            placeholder="Search for places..."
+            placeholder={strings[language].searchPlaceholder}
             containerStyle={{
               flex: 1,
               left: 0,
@@ -245,7 +248,9 @@ export const MapSelector: FunctionComponent<{
           </MainButton>
         </ButtonContainer>
         {address ? (
-          <ResultLocationText>Selected Address: {address}</ResultLocationText>
+          <ResultLocationText>
+            {strings[language].selectedAddress}: {address}
+          </ResultLocationText>
         ) : null}
       </Container>
     </Modal>

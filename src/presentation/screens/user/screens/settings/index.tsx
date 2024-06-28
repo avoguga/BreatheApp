@@ -1,3 +1,4 @@
+import { useLanguageStore } from '@/infra/language';
 import React from 'react';
 import { Switch } from 'react-native';
 import { Accordion } from './components/accordion';
@@ -8,6 +9,7 @@ import {
   Separator,
 } from './styles';
 import { useNotificationSettings } from './use-settings';
+import strings from './utils/strings';
 
 export const Settings = () => {
   const {
@@ -18,16 +20,23 @@ export const Settings = () => {
     setWaterInterval,
     toggleSwitch,
   } = useNotificationSettings();
+  const language = useLanguageStore((state) => state.language);
 
   const stretchOptions = [
-    { label: '1 hora', value: '1 hora' },
-    { label: '2 horas', value: '2 horas' },
-    { label: '3 horas', value: '3 horas' },
+    { label: strings[language].oneHour, value: strings[language].oneHour },
+    { label: strings[language].twoHours, value: strings[language].twoHours },
+    {
+      label: strings[language].threeHours,
+      value: strings[language].threeHours,
+    },
   ];
   const waterOptions = [
-    { label: '30 minutos', value: '30 minutos' },
-    { label: '1 hora', value: '1 hora' },
-    { label: '2 horas', value: '2 horas' },
+    {
+      label: strings[language].thirtyMinutes,
+      value: strings[language].thirtyMinutes,
+    },
+    { label: strings[language].oneHour, value: strings[language].oneHour },
+    { label: strings[language].twoHours, value: strings[language].twoHours },
   ];
 
   return (
@@ -39,7 +48,9 @@ export const Settings = () => {
           alignItems: 'center',
         }}
       >
-        <NotificationText>Notificações Ativas:</NotificationText>
+        <NotificationText>
+          {strings[language].notificationsActive}
+        </NotificationText>
         <Switch
           trackColor={{ false: '#767577', true: '#767577' }}
           thumbColor={isEnabled ? '#f4f3f4' : '#f4f3f4'}
@@ -50,7 +61,7 @@ export const Settings = () => {
       <Separator />
       <Accordion
         data={stretchOptions}
-        accordionTitle="Intervalo para alongamento"
+        accordionTitle={strings[language].stretchInterval}
         collapsable
         selectedValue={stretchInterval}
         onSelect={setStretchInterval}
@@ -58,7 +69,7 @@ export const Settings = () => {
       <Separator />
       <Accordion
         data={waterOptions}
-        accordionTitle="Intervalo para água"
+        accordionTitle={strings[language].waterInterval}
         collapsable
         selectedValue={waterInterval}
         onSelect={setWaterInterval}

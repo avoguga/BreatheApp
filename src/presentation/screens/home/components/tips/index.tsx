@@ -1,12 +1,11 @@
-import { colors } from "@/presentation/constants/colors";
-import { fonts } from "@/presentation/constants/fonts";
-import { RootStackParamList } from "@/presentation/routes/stack";
-import { useNavigation } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
-import React from "react";
-import { AppDriversTips } from "../../utils";
-import { Card } from "../card";
-import { HorizontalList } from "../horizontal-list";
+import { useLanguageStore } from '@/infra/language';
+import { colors } from '@/presentation/constants/colors';
+import { fonts } from '@/presentation/constants/fonts';
+import { useNavigation } from '@react-navigation/native';
+import React from 'react';
+import strings from '../../utils';
+import { Card } from '../card';
+import { HorizontalList } from '../horizontal-list';
 
 export interface Tip {
   id: string;
@@ -18,27 +17,29 @@ export interface Tip {
 }
 
 export const Tips = () => {
-  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+  const navigation = useNavigation();
+  const language = useLanguageStore((state) => state.language);
+  const tips = strings[language].tips;
 
   return (
     <>
       <Card.Text
         style={{
           color: colors.primary.textColor,
-          textAlign: "left",
+          textAlign: 'left',
           marginLeft: 16,
         }}
       >
-        Dicas para o motorista
+        {language === 'en' ? 'Driver Tips' : 'Dicas para o motorista'}
       </Card.Text>
 
       <HorizontalList
-        data={AppDriversTips}
+        data={tips}
         style={{ marginBottom: 16 }}
         renderItem={({ item }) => (
           <Card
             onPress={() =>
-              navigation.navigate("DriverTips", { tip: item as Tip })
+              navigation.navigate('DriverTips', { tip: item as Tip })
             }
           >
             <Card.Image source={{ uri: item.uri }}>

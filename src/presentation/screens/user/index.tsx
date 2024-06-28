@@ -1,3 +1,4 @@
+import { useLanguageStore } from '@/infra/language';
 import { colors } from '@/presentation/constants/colors';
 import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -8,10 +9,13 @@ import {
   ItemTextContainer,
   ItemTitle,
 } from './styles';
-import { statOptions } from './utils';
+import strings from './utils';
 
 export const User = () => {
   const { navigate } = useNavigation();
+  const language = useLanguageStore((state) => state.language);
+  const statOptions = strings[language].statOptions;
+
   return (
     <FlatList
       data={statOptions}

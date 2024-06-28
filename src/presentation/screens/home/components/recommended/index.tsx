@@ -1,40 +1,44 @@
-import { MainButton } from "@/global/components/main-button";
-import { colors } from "@/presentation/constants/colors";
-import { RootStackParamList } from "@/presentation/routes/stack";
-import { useNavigation } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { mockRecomended } from "../../utils";
-import { Card } from "../card";
-import { HorizontalList } from "../horizontal-list";
+import { MainButton } from '@/global/components/main-button';
+import { useLanguageStore } from '@/infra/language';
+import { colors } from '@/presentation/constants/colors';
+import { RootStackParamList } from '@/presentation/routes/stack';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import React from 'react';
+import stringsTipsAndRecommended from '../../utils';
+import strings from '../../utils/strings';
+import { Card } from '../card';
+import { HorizontalList } from '../horizontal-list';
 
 export const Recommended = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+  const language = useLanguageStore((state) => state.language);
 
   return (
     <>
       <Card.Text
         style={{
           color: colors.primary.textColor,
-          textAlign: "left",
+          textAlign: 'left',
           marginLeft: 16,
         }}
       >
-        Sons para relaxar
+        {strings[language].relaxingSounds}
       </Card.Text>
       <HorizontalList
-        data={mockRecomended}
+        data={stringsTipsAndRecommended[language].recommended}
         renderItem={({ item }) => (
           <Card
             onPress={() =>
-              navigation.navigate("SongsList", { musicType: item.title })
+              navigation.navigate('SongsList', { musicType: item.title })
             }
           >
             <Card.Image source={{ uri: item.uri }}>
               <Card.Text>{item.title}</Card.Text>
               <MainButton
                 style={{
-                  backgroundColor: "transparent",
-                  position: "absolute",
+                  backgroundColor: 'transparent',
+                  position: 'absolute',
                   flex: 1,
                   bottom: 8,
                   left: 16,

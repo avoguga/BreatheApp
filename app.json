@@ -19,6 +19,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
+      "permissions": ["FOREGROUND_SERVICE"],
       "package": "com.br.breatheapp",
       "googleServicesFile": "./google-services.json"
     },

@@ -1,7 +1,7 @@
-import { useLanguageStore } from '@/infra/language';
-import { RootStackParamList } from '@/presentation/routes/stack';
-import { StackScreenProps } from '@react-navigation/stack';
-import { Linking, TouchableOpacity } from 'react-native';
+import { useLanguageStore } from "@/infra/language";
+import { RootStackParamList } from "@/presentation/routes/stack";
+import { StackScreenProps } from "@react-navigation/stack";
+import { Linking, TouchableOpacity } from "react-native";
 import {
   DescriptionText,
   FullArticleText,
@@ -13,10 +13,10 @@ import {
   TipContainer,
   TipImage,
   TitleText,
-} from './styles';
-import strings from './utils/strings';
+} from "./styles";
+import strings from "./utils/strings";
 
-type DriverTipsProps = StackScreenProps<RootStackParamList, 'DriverTips'>;
+type DriverTipsProps = StackScreenProps<RootStackParamList, "DriverTips">;
 
 export const DriverTips: React.FC<DriverTipsProps> = ({ route }) => {
   const { tip } = route.params;

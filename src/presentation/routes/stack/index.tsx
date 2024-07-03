@@ -1,23 +1,24 @@
-import { useAuth } from '@/contexts/auth-provider';
-import { colors } from '@/presentation/constants/colors';
-import { fonts } from '@/presentation/constants/fonts';
-import { DriverTips } from '@/presentation/screens/driver-tips';
-import { SessionOption } from '@/presentation/screens/driving-time-selector';
-import { ForgotPassword } from '@/presentation/screens/forgot-password';
-import { Tip } from '@/presentation/screens/home/components/tips';
-import { Login } from '@/presentation/screens/login';
-import { Onboarding } from '@/presentation/screens/onboarding';
-import { Pomodoro } from '@/presentation/screens/pomodoro';
-import { Register } from '@/presentation/screens/register';
-import { SongsList } from '@/presentation/screens/songs-list';
-import { Splash } from '@/presentation/screens/splash';
-import { DrivenTime } from '@/presentation/screens/user/screens/driven-time';
-import { History } from '@/presentation/screens/user/screens/history';
-import { Settings } from '@/presentation/screens/user/screens/settings';
-import { Feather } from '@expo/vector-icons';
-import { createStackNavigator } from '@react-navigation/stack';
-import React from 'react';
-import { BottomTabNavigation } from '../tab';
+import { useAuth } from "@/contexts/auth-provider";
+import { colors } from "@/presentation/constants/colors";
+import { fonts } from "@/presentation/constants/fonts";
+import { DriverTips } from "@/presentation/screens/driver-tips";
+import { SessionOption } from "@/presentation/screens/driving-time-selector";
+import { ForgotPassword } from "@/presentation/screens/forgot-password";
+import { Tip } from "@/presentation/screens/home/components/tips";
+import { Login } from "@/presentation/screens/login";
+import { Onboarding } from "@/presentation/screens/onboarding";
+import { Pomodoro } from "@/presentation/screens/pomodoro";
+import { Register } from "@/presentation/screens/register";
+import { SongsList } from "@/presentation/screens/songs-list";
+import { Splash } from "@/presentation/screens/splash";
+import { DrivenTime } from "@/presentation/screens/user/screens/driven-time";
+import { History } from "@/presentation/screens/user/screens/history";
+import { Language } from "@/presentation/screens/user/screens/language";
+import { Settings } from "@/presentation/screens/user/screens/settings";
+import { Feather } from "@expo/vector-icons";
+import { createStackNavigator } from "@react-navigation/stack";
+import React from "react";
+import { BottomTabNavigation } from "../tab";
 
 export type RootStackParamList = {
   Splash: undefined;
@@ -36,7 +37,9 @@ export type RootStackParamList = {
   };
   SongsList: {
     musicType: string;
+    category?: string;
   };
+  Language: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -72,8 +75,9 @@ export const StackNavigation = () => {
             component={BottomTabNavigation}
             options={{
               headerShown: true,
-              title: 'Home',
+              title: "",
               headerLeft: () => null,
+              headerStyle: {},
             }}
           />
           <Stack.Screen name="Pomodoro" component={Pomodoro} />
@@ -82,7 +86,7 @@ export const StackNavigation = () => {
             component={DrivenTime}
             options={{
               headerShown: true,
-              title: '',
+              title: "",
               headerBackImage: () => <Feather name="chevron-left" size={32} />,
             }}
           />
@@ -91,7 +95,7 @@ export const StackNavigation = () => {
             component={History}
             options={{
               headerShown: true,
-              title: '',
+              title: "",
               headerBackImage: () => <Feather name="chevron-left" size={32} />,
             }}
           />
@@ -100,7 +104,16 @@ export const StackNavigation = () => {
             component={Settings}
             options={{
               headerShown: true,
-              title: '',
+              title: "",
+              headerBackImage: () => <Feather name="chevron-left" size={32} />,
+            }}
+          />
+          <Stack.Screen
+            name="Language"
+            component={Language}
+            options={{
+              headerShown: true,
+              title: "",
               headerBackImage: () => <Feather name="chevron-left" size={32} />,
             }}
           />
@@ -110,7 +123,7 @@ export const StackNavigation = () => {
             component={SongsList}
             options={{
               headerShown: true,
-              title: '',
+              title: "",
               headerBackImage: () => (
                 <Feather
                   name="chevron-left"

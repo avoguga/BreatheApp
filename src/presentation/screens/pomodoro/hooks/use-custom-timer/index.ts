@@ -1,9 +1,10 @@
-import { useLanguageStore } from '@/infra/language';
-import { displayNotification } from '@/infra/notifee';
-import { SessionOption } from '@/presentation/screens/driving-time-selector';
-import { AndroidImportance } from '@notifee/react-native';
+import notifee, { AndroidImportance } from '@notifee/react-native';
 import { useEffect, useState } from 'react';
 import { Vibration } from 'react-native';
+import BackgroundTimer from 'react-native-background-timer';
+
+import { useLanguageStore } from '@/infra/language';
+import { SessionOption } from '@/presentation/screens/driving-time-selector';
 import { usePomodoroStore } from '../../store';
 import strings from './utils/strings';
 
@@ -16,49 +17,62 @@ export const useCustomTimer = (initialSession: SessionOption) => {
   useEffect(() => {
     setMode('work');
     setTimeUntilBreak(session.work);
+    updateNotification(session.work, true);
   }, [session]);
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    BackgroundTimer.start();
+
+    const intervalId = BackgroundTimer.setInterval(() => {
       setTime(time + 1);
       if (timeUntilBreak > 0) {
         setTimeUntilBreak(timeUntilBreak - 1);
+        updateNotification(timeUntilBreak);
       } else {
         switchMode();
       }
     }, 1000);
 
-    return () => clearInterval(interval);
+    return () => {
+      BackgroundTimer.clearInterval(intervalId);
+      BackgroundTimer.stop();
+    };
   }, [time, timeUntilBreak, mode, session]);
 
   const switchMode = () => {
     const nextMode = mode === 'work' ? 'rest' : 'work';
+    const nextDuration = nextMode === 'work' ? session.work : session.rest;
 
-    if (nextMode === 'rest') {
-      Vibration.vibrate();
-      displayNotification({
-        title: strings[language].restNotificationTitle,
-        body: strings[language].restNotificationBody(session.rest / 60),
-        android: {
-          channelId: 'default',
-          smallIcon: 'ic_launcher',
-          importance: AndroidImportance.HIGH,
-        },
-      });
-    } else {
-      Vibration.vibrate();
-      displayNotification({
-        title: strings[language].workNotificationTitle,
-        body: strings[language].workNotificationBody(session.work / 60),
-        android: {
-          channelId: 'default',
-          smallIcon: 'ic_launcher',
-          importance: AndroidImportance.HIGH,
-        },
-      });
-    }
+    Vibration.vibrate();
     setMode(nextMode);
-    setTimeUntilBreak(nextMode === 'work' ? session.work : session.rest);
+    setTimeUntilBreak(nextDuration);
+    updateNotification(nextDuration, true);
+  };
+
+  const updateNotification = async (timeLeft: number, isNewSession = false) => {
+    const body = isNewSession
+      ? mode === 'work'
+        ? strings[language].workNotificationBody(Math.floor(timeLeft / 60))
+        : strings[language].restNotificationBody(Math.floor(timeLeft / 60))
+      : `${strings[language].remainingTime}: ${Math.floor(timeLeft / 60)}:${
+          timeLeft % 60 < 10 ? '0' : ''
+        }${timeLeft % 60} ${strings[language].minutes}.`;
+
+    const notificationId = 'timer-notification';
+    await notifee.displayNotification({
+      id: notificationId,
+      title:
+        mode === 'work'
+          ? strings[language].workNotificationTitle
+          : strings[language].restNotificationTitle,
+      body: body,
+      android: {
+        channelId: 'default',
+        smallIcon: 'ic_launcher',
+        importance: AndroidImportance.HIGH,
+        ongoing: true,
+      },
+    });
   };
 
   const updateSession = (newSession: SessionOption) => {

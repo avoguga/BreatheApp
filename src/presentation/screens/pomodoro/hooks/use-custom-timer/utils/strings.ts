@@ -1,5 +1,7 @@
 const strings = {
   en: {
+    remainingTime: 'Remaining time',
+    minutes: 'minutes',
     restNotificationTitle: '⏰ Break Time!',
     restNotificationBody: (minutes: number) =>
       `Time to relax! Take a break for ${minutes} minutes. 😌`,
@@ -8,6 +10,8 @@ const strings = {
       `Time to get back to work! Let's go for ${minutes} minutes. 💪`,
   },
   pt: {
+    remainingTime: 'Tempo restante',
+    minutes: 'minutos',
     restNotificationTitle: '⏰ Pausa!',
     restNotificationBody: (minutes: number) =>
       `Hora de descansar! Relaxe por ${minutes} minutos. 😌`,

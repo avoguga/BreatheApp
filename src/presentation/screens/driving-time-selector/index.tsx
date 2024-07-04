@@ -1,11 +1,11 @@
-import { Container } from '@/global/components/container';
-import { MainButton } from '@/global/components/main-button';
-import { useLanguageStore } from '@/infra/language';
-import { Feather } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
-import { formatTime } from '../home/utils';
-import { usePomodoroStore } from '../pomodoro/store';
+import { Container } from "@/global/components/container";
+import { MainButton } from "@/global/components/main-button";
+import { useLanguageStore } from "@/infra/language";
+import { Feather } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import React, { useState } from "react";
+import { formatTime } from "../home/utils";
+import { usePomodoroStore } from "../pomodoro/store";
 import {
   MainButtonText,
   OptionText,
@@ -14,8 +14,8 @@ import {
   SubTitle,
   SubTitleContainer,
   Title,
-} from './styles';
-import strings from './utils/strings';
+} from "./styles";
+import strings from "./utils/strings";
 
 export type SessionOption = {
   work: number;
@@ -24,7 +24,7 @@ export type SessionOption = {
 };
 
 const SessionOptions: SessionOption[] = [
-  { work: 10, rest: 5, total: 30 }, // Opção de teste - 10 sec de trabalho e 5 de descanso.
+  // { work: 10, rest: 5, total: 30 }, // Opção de teste - 10 sec de trabalho e 5 de descanso.
   { work: 5400, rest: 900, total: 28800 }, // 90 min trabalho, 15 min descanso, 8 horas total
   { work: 7200, rest: 1800, total: 32400 }, // 120 min trabalho, 30 min descanso, 9 horas total
   { work: 9000, rest: 1800, total: 36000 }, // 150 min trabalho, 30 min descanso, 10 horas total
@@ -33,9 +33,9 @@ const SessionOptions: SessionOption[] = [
 const formatTimeInMin = (seconds: number): string => {
   const hours = Math.floor(seconds / 3600);
   const minutes = Math.floor((seconds % 3600) / 60);
-  return `${hours.toString().padStart(2, '0')}:${minutes
+  return `${hours.toString().padStart(2, "0")}:${minutes
     .toString()
-    .padStart(2, '0')}`;
+    .padStart(2, "0")}`;
 };
 
 export const DrivingTimeSelector = () => {
@@ -51,8 +51,8 @@ export const DrivingTimeSelector = () => {
   };
 
   const handleStartSession = (): void => {
-    setMode('work');
-    navigation.navigate('Pomodoro', { session: selectedSession });
+    setMode("work");
+    navigation.navigate("Pomodoro", { session: selectedSession });
   };
 
   return (
@@ -67,8 +67,8 @@ export const DrivingTimeSelector = () => {
       <SubTitleContainer>
         <Feather name="coffee" size={20} />
         <SubTitle>
-          {strings[language].timeUntil}{' '}
-          {mode === 'work'
+          {strings[language].timeUntil}{" "}
+          {mode === "work"
             ? strings[language].takeABreak
             : strings[language].backToWork}
           : {formatTime(timeUntilBreak)}
@@ -82,7 +82,7 @@ export const DrivingTimeSelector = () => {
             onPress={() => handleSelectSession(option)}
           >
             <OptionText>
-              {strings[language].work}: {formatTimeInMin(option.work)} -{' '}
+              {strings[language].work}: {formatTimeInMin(option.work)} -{" "}
               {strings[language].rest}: {formatTimeInMin(option.rest)}
             </OptionText>
             {selectedSession === option && (

@@ -1,14 +1,14 @@
-import { colors } from '@/presentation/constants/colors';
-import { RootStackParamList } from '@/presentation/routes/stack';
-import { RouteProp, useRoute } from '@react-navigation/native';
-import { useEffect } from 'react';
-import { View } from 'react-native';
-import AnimatedCircle from './components/timer';
-import { useCustomTimer } from './hooks/use-custom-timer';
+import { colors } from "@/presentation/constants/colors";
+import { RootStackParamList } from "@/presentation/routes/stack";
+import { RouteProp, useRoute } from "@react-navigation/native";
+import { useEffect } from "react";
+import { View } from "react-native";
+import AnimatedCircle from "./components/timer";
+import { useCustomTimer } from "./hooks/use-custom-timer";
 
 export const Pomodoro = () => {
   const { session } =
-    useRoute<RouteProp<RootStackParamList, 'Pomodoro'>>().params;
+    useRoute<RouteProp<RootStackParamList, "Pomodoro">>().params;
   const { timeUntilBreak, mode, updateSession } = useCustomTimer(session);
 
   useEffect(() => {
@@ -18,9 +18,10 @@ export const Pomodoro = () => {
   return (
     <View
       style={{
-        backgroundColor: colors.primary.backgroundColor,
+        backgroundColor:
+          mode === "rest" ? "#0D21A1" : colors.primary.backgroundColor,
         flex: 1,
-        justifyContent: 'center',
+        justifyContent: "center",
       }}
     >
       <AnimatedCircle
@@ -28,7 +29,7 @@ export const Pomodoro = () => {
         size={200}
         tintColor="#fff"
         timeLeft={timeUntilBreak}
-        totalDuration={mode === 'rest' ? session.rest : session.work}
+        totalDuration={mode === "rest" ? session.rest : session.work}
       />
     </View>
   );

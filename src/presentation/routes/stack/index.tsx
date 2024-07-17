@@ -48,7 +48,7 @@ export const StackNavigation = () => {
   const { currentUser, loading } = useAuth();
 
   if (loading) {
-    return null;
+    return <Splash />;
   }
 
   return (

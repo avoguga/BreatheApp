@@ -1,11 +1,15 @@
-import { Audio } from 'expo-av';
-import { useCallback, useState } from 'react';
-import { IAudioService } from '../types';
+import { Audio } from "expo-av";
+import { useCallback } from "react";
+import { useAudioStore } from "../../store/audioStore";
+import { IAudioService } from "../types";
 
 export const useExpoAvService = (): IAudioService => {
-  const [sound, setSound] = useState<Audio.Sound | null>(null);
-  const [isPlaying, setIsPlaying] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState<string | null>(null);
+  const sound = useAudioStore((state) => state.sound);
+  const isPlaying = useAudioStore((state) => state.isPlaying);
+  const isLoading = useAudioStore((state) => state.isLoading);
+  const setSound = useAudioStore((state) => state.setSound);
+  const setIsPlaying = useAudioStore((state) => state.setIsPlaying);
+  const setIsLoading = useAudioStore((state) => state.setIsLoading);
 
   const playSound = useCallback(
     async (file: string, id: string): Promise<void> => {
@@ -19,7 +23,7 @@ export const useExpoAvService = (): IAudioService => {
       setIsLoading(null);
       await newSound.playAsync();
     },
-    [sound, setIsLoading, setIsPlaying]
+    [sound, setIsLoading, setIsPlaying, setSound]
   );
 
   const stopSound = useCallback(async (): Promise<void> => {
@@ -27,7 +31,7 @@ export const useExpoAvService = (): IAudioService => {
       await sound.stopAsync();
       setIsPlaying(null);
     }
-  }, [sound]);
+  }, [sound, setIsPlaying]);
 
   return { isPlaying, isLoading, playSound, stopSound };
 };

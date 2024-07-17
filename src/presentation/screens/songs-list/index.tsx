@@ -10,6 +10,7 @@ import SkeletonItem from "./components/skeleton-loading";
 import { SongItem } from "./components/song-item";
 import { useExpoAvService } from "./hooks/implementations/use-expo-av-service";
 import { useAudioPlayer } from "./hooks/use-audio-player";
+import { useAudioStore } from "./store/audioStore";
 import {
   Container,
   Header,
@@ -36,6 +37,7 @@ export const SongsList = () => {
 
   const audioImplementation = useExpoAvService();
   const audioService = useAudioPlayer(audioImplementation);
+  const isPlaying = useAudioStore((state) => state.isPlaying);
 
   useEffect(() => {
     fetchMusic();
@@ -104,7 +106,7 @@ export const SongsList = () => {
                 musicItem={item}
                 playSound={audioService.playSound}
                 stopSound={audioService.stopSound}
-                isPlaying={audioService.isPlaying === item.id}
+                isPlaying={isPlaying === item.id}
                 isLoading={audioService.isLoading === item.id}
               />
             )}

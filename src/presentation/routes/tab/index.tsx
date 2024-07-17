@@ -1,15 +1,16 @@
-import { useLanguageStore } from '@/infra/language';
-import { colors } from '@/presentation/constants/colors';
-import { fonts } from '@/presentation/constants/fonts';
-import DrivingTimeSelector from '@/presentation/screens/driving-time-selector';
-import { ForumScreen } from '@/presentation/screens/forum';
-import { Home } from '@/presentation/screens/home';
-import { User } from '@/presentation/screens/user';
-import { Feather, Ionicons } from '@expo/vector-icons';
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import strings from './utils/strings';
+import { useAuth } from "@/contexts/auth-provider";
+import { useLanguageStore } from "@/infra/language";
+import { colors } from "@/presentation/constants/colors";
+import { fonts } from "@/presentation/constants/fonts";
+import DrivingTimeSelector from "@/presentation/screens/driving-time-selector";
+import { ForumScreen } from "@/presentation/screens/forum";
+import { Home } from "@/presentation/screens/home";
+import { User } from "@/presentation/screens/user";
+import { Feather, Ionicons } from "@expo/vector-icons";
+import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
+import React from "react";
+import { Alert, StyleSheet, Text, View } from "react-native";
+import strings from "./utils/strings";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -24,22 +25,45 @@ const TabBarIcon = ({
 }: {
   name: any;
   focused: boolean;
-  library: 'Feather' | 'Ionicons';
+  library: "Feather" | "Ionicons";
 }) => {
-  const IconComponent = library === 'Feather' ? Feather : Ionicons;
+  const IconComponent = library === "Feather" ? Feather : Ionicons;
   return (
     <View style={styles.iconWrapper}>
       <IconComponent
         name={name}
         size={24}
-        color={focused ? colors.primary.textColor : 'gray'}
+        color={focused ? colors.primary.textColor : "gray"}
       />
     </View>
   );
 };
 
-export const BottomTabNavigation = () => {
+export const BottomTabNavigation = ({ navigation }: any) => {
   const language = useLanguageStore((state) => state.language);
+  const { logout } = useAuth();
+
+  const handleLogout = () => {
+    Alert.alert(
+      "Confirmação de Logout",
+      "Deseja realmente sair?",
+      [
+        {
+          text: "Cancelar",
+          onPress: () => console.log("Logout cancelado"),
+          style: "cancel",
+        },
+        {
+          text: "Sair",
+          onPress: () => {
+            logout();
+            navigation.replace("Login"); // Ajuste conforme seu sistema de navegação
+          },
+        },
+      ],
+      { cancelable: false }
+    );
+  };
 
   return (
     <Tab.Navigator
@@ -101,19 +125,36 @@ export const BottomTabNavigation = () => {
         }}
         component={User}
       />
+      <Tab.Screen
+        name="Logout"
+        options={{
+          tabBarLabel: (<TabBarLabel>Logout</TabBarLabel>) as unknown as string,
+          tabBarIcon: ({ focused }) => (
+            <TabBarIcon name="log-out" focused={focused} library="Feather" />
+          ),
+        }}
+        listeners={() => ({
+          tabPress: (e) => {
+            e.preventDefault();
+            handleLogout();
+          },
+        })}
+      >
+        {() => null}
+      </Tab.Screen>
     </Tab.Navigator>
   );
 };
 
 const styles = StyleSheet.create({
   barStyle: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     borderTopWidth: 0.3,
-    borderColor: '#9e9d94',
+    borderColor: "#9e9d94",
     backgroundColor: colors.secondary.backgroundColor,
     elevation: 5,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
@@ -124,12 +165,12 @@ const styles = StyleSheet.create({
     color: colors.primary.textColor,
   },
   iconWrapper: {
-    position: 'relative',
-    alignItems: 'center',
-    justifyContent: 'center',
+    position: "relative",
+    alignItems: "center",
+    justifyContent: "center",
   },
   indicatorStyle: {
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    backgroundColor: "rgba(255, 255, 255, 0.2)",
     borderRadius: 24,
   },
 });

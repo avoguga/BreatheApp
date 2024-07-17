@@ -4,24 +4,23 @@ import {
   AVPlaybackStatusSuccess,
   InterruptionModeAndroid,
 } from "expo-av";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
+import { useAudioStore } from "../store/audioStore";
 import { IAudioService } from "./types";
 
 export const useAudioPlayer = (audioService: IAudioService) => {
-  const [isPlaying, setIsPlaying] = useState<string | null>(
-    audioService.isPlaying
-  );
-  const [isLoading, setIsLoading] = useState<string | null>(
-    audioService.isLoading
-  );
-  const [sound, setSound] = useState<Audio.Sound | null>(null);
+  const isPlaying = useAudioStore((state) => state.isPlaying);
+  const isLoading = useAudioStore((state) => state.isLoading);
+  const sound = useAudioStore((state) => state.sound);
+  const setIsPlaying = useAudioStore((state) => state.setIsPlaying);
+  const setIsLoading = useAudioStore((state) => state.setIsLoading);
+  const setSound = useAudioStore((state) => state.setSound);
 
   useEffect(() => {
     Audio.setAudioModeAsync({
       playsInSilentModeIOS: true,
       allowsRecordingIOS: false,
       staysActiveInBackground: true,
-      // interruptionModeIOS: InterruptionModeIOS.DuckOthers, deixa isso pra depois rapa
       interruptionModeAndroid: InterruptionModeAndroid.DuckOthers,
       shouldDuckAndroid: true,
       playThroughEarpieceAndroid: false,
@@ -48,7 +47,7 @@ export const useAudioPlayer = (audioService: IAudioService) => {
         }
       });
     },
-    [sound]
+    [sound, setIsLoading, setIsPlaying, setSound]
   );
 
   const stopSound = useCallback(async () => {
@@ -58,7 +57,7 @@ export const useAudioPlayer = (audioService: IAudioService) => {
     }
     setIsPlaying(null);
     setSound(null);
-  }, [sound]);
+  }, [sound, setIsPlaying, setSound]);
 
   return { isPlaying, isLoading, playSound, stopSound };
 };

@@ -12,6 +12,7 @@ interface AuthContextType {
   currentUser: FirebaseAuthTypes.User | null;
   userName: string | null;
   loading: boolean;
+  logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -49,8 +50,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     return subscriber; // Unsubscribe on unmount
   }, []);
 
+  const logout = () => {
+    auth()
+      .signOut()
+      .then(() => {
+        setCurrentUser(null);
+        setUserName(null);
+      });
+  };
+
   return (
-    <AuthContext.Provider value={{ currentUser, userName, loading }}>
+    <AuthContext.Provider value={{ currentUser, userName, loading, logout }}>
       {!loading && children}
     </AuthContext.Provider>
   );

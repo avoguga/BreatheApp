@@ -1,39 +1,44 @@
-import { AccountDTO } from '@/dtos/create-account-dto';
-import { authentication } from '@/infra/firebase';
-import { useLanguageStore } from '@/infra/language';
-import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import { AccountDTO } from "@/dtos/create-account-dto";
+import { authentication } from "@/infra/firebase";
+import { useLanguageStore } from "@/infra/language";
+import { useNavigation } from "@react-navigation/native";
+import React, { useState } from "react";
 import {
+  ActivityIndicator,
   Alert,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
-} from 'react-native';
-import strings from './utils';
+} from "react-native";
+import strings from "./utils";
 
 const Register = () => {
   const { navigate } = useNavigation();
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const language = useLanguageStore((state) => state.language);
 
   const handleRegister = async () => {
     if (password !== confirmPassword) {
-      Alert.alert('Erro', strings[language].passwordsDontMatch);
+      Alert.alert("Erro", strings[language].passwordsDontMatch);
       return;
     }
 
     const accountDTO: AccountDTO = { email, password, name };
+    setLoading(true);
     try {
       await authentication.createAccount(accountDTO);
-      Alert.alert('Sucesso', strings[language].registrationSuccess);
-      navigate('Login' as never);
+      Alert.alert("Sucesso", strings[language].registrationSuccess);
+      navigate("Login" as never);
     } catch (error) {
-      Alert.alert('Erro', strings[language].registrationError);
+      Alert.alert("Erro", strings[language].registrationError);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -71,19 +76,27 @@ const Register = () => {
         onChangeText={setConfirmPassword}
       />
       <TouchableOpacity
-        onPress={() => navigate('Login' as never)}
+        onPress={() => navigate("Login" as never)}
         style={styles.anchors}
       >
         <Text style={styles.register}>
-          {strings[language].alreadyHaveAccount}{' '}
+          {strings[language].alreadyHaveAccount}{" "}
           <Text style={styles.loginLink}>{strings[language].loginLink}</Text>
         </Text>
       </TouchableOpacity>
       <View style={styles.footer}>
-        <TouchableOpacity style={styles.button} onPress={handleRegister}>
-          <Text style={styles.buttonText}>
-            {strings[language].registerButton}
-          </Text>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={handleRegister}
+          disabled={loading}
+        >
+          {loading ? (
+            <ActivityIndicator size="small" color="#000" />
+          ) : (
+            <Text style={styles.buttonText}>
+              {strings[language].registerButton}
+            </Text>
+          )}
         </TouchableOpacity>
       </View>
     </View>
@@ -93,58 +106,58 @@ const Register = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#E5BE00',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#E5BE00",
+    alignItems: "center",
+    justifyContent: "center",
     padding: 16,
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
-    color: '#fff',
+    fontWeight: "bold",
+    color: "#fff",
     marginBottom: 20,
   },
   input: {
-    width: '100%',
+    width: "100%",
     height: 56,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderRadius: 8,
     paddingHorizontal: 16,
     fontSize: 16,
     marginBottom: 10,
   },
   anchors: {
-    width: '100%',
-    alignItems: 'flex-start',
+    width: "100%",
+    alignItems: "flex-start",
     marginBottom: 20,
   },
   register: {
-    color: '#FFF',
-    textAlign: 'left',
-    width: '100%',
+    color: "#FFF",
+    textAlign: "left",
+    width: "100%",
     marginBottom: 10,
   },
   loginLink: {
-    textDecorationLine: 'underline',
+    textDecorationLine: "underline",
   },
   footer: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 20,
-    width: '100%',
-    alignItems: 'center',
+    width: "100%",
+    alignItems: "center",
   },
   button: {
-    width: '100%',
+    width: "100%",
     height: 50,
-    backgroundColor: '#FFF',
+    backgroundColor: "#FFF",
     borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   buttonText: {
-    color: '#000',
+    color: "#000",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });
 

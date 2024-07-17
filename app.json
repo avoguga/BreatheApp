@@ -2,7 +2,7 @@
   "expo": {
     "name": "Breathe",
     "slug": "Breathe",
-    "version": "1.0.0",
+    "version": "1.0.4",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -27,12 +27,17 @@
         "ACCESS_FINE_LOCATION",
         "ACCESS_COARSE_LOCATION"
       ],
-      "package": "com.br.breatheapp",
+      "package": "com.layzasandes.breathe",
       "googleServicesFile": "./google-services.json"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": ["@react-native-firebase/app", "@react-native-firebase/auth"]
+    "plugins": ["@react-native-firebase/app", "@react-native-firebase/auth"],
+    "extra": {
+      "eas": {
+        "projectId": "74f7dcec-5e08-474a-85e1-871cfe5d4e50"
+      }
+    }
   }
 }

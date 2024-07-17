@@ -1,4 +1,4 @@
-package com.br.breatheapp
+package com.layzasandes.breathe
 
 import android.os.Build
 import android.os.Bundle
